@@ -1,0 +1,1196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".SiteStart">
+
+
+    <TextView
+        android:id="@+id/tv_"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_medium"
+        android:text="Site Start and Safety Assessment"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_16sdp"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.08"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/scr_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_"
+        app:layout_constraintVertical_bias="0.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+
+<!--            <EditText-->
+<!--                android:id="@+id/et_input_code"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="@dimen/_40sdp"-->
+<!--                android:layout_marginHorizontal="@dimen/_20sdp"-->
+<!--                android:layout_marginTop="@dimen/_20sdp"-->
+<!--                android:background="@drawable/questionback"-->
+<!--                android:fontFamily="@font/roboto_medium"-->
+<!--                android:gravity="left"-->
+<!--                android:hint="Input Code"-->
+<!--                android:padding="@dimen/_8sdp"-->
+<!--                android:textSize="@dimen/_15sdp" />-->
+
+            <LinearLayout
+                android:id="@+id/ll_ref_with_bidvest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_20sdp"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:background="@drawable/questionback"
+                    android:backgroundTint="#E4E1E1">
+
+                    <TextView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Did you open the Ref with Bidvest ?"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13sdp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="@drawable/questionback"
+                    android:gravity="center">
+                    <Switch
+                        android:id="@+id/sw_ref_with_bidvest"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_all_widget"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+
+
+            <LinearLayout
+                android:id="@+id/ll_job_type"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_38sdp"
+                android:background="@drawable/questionback"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/_10sdp"
+                >
+
+                <Spinner
+                    android:id="@+id/sp_job_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/jobtype"
+                    />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/et_gps_location"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:background="@drawable/questionback"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="left"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:hint="Site GPS Location as per Ref"
+                android:padding="@dimen/_8sdp"
+                android:textSize="@dimen/_15sdp"
+            />
+
+            <EditText
+                android:id="@+id/et_site_name"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:background="@drawable/questionback"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="left"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:hint="Site Name "
+                android:padding="@dimen/_8sdp"
+                android:textSize="@dimen/_15sdp"
+                />
+
+            <EditText
+                android:id="@+id/et_site_address"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:background="@drawable/questionback"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="left"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:hint="Site Address"
+                android:padding="@dimen/_8sdp"
+                android:textSize="@dimen/_15sdp"
+                />
+
+            <EditText
+                android:id="@+id/et_ref_no"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:background="@drawable/questionback"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="left"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:hint="Ref No"
+                android:padding="@dimen/_8sdp"
+                android:textSize="@dimen/_15sdp"
+                />
+
+
+            <EditText
+                android:id="@+id/et_ref_expire"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:background="@drawable/questionback"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="left"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:hint="Date Ref Expires"
+                android:padding="@dimen/_8sdp"
+                android:textSize="@dimen/_15sdp"
+                />
+
+
+            <EditText
+                android:id="@+id/et_site_manager_name"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:background="@drawable/questionback"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="left"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:hint="Site Manager Name"
+                android:padding="@dimen/_8sdp"
+                android:textSize="@dimen/_15sdp"
+                />
+
+            <EditText
+                android:id="@+id/et_site_manager_contact"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:background="@drawable/questionback"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="left"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:hint="Site Manager Contact Number"
+                android:padding="@dimen/_8sdp"
+                android:textSize="@dimen/_15sdp"
+                />
+
+
+            <EditText
+                android:id="@+id/et_site_manager_email"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:background="@drawable/questionback"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="left"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:hint="Site Manager Email "
+                android:padding="@dimen/_8sdp"
+                android:textSize="@dimen/_15sdp"
+                />
+            <LinearLayout
+                android:id="@+id/ll_details_correct"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_20sdp"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:background="@drawable/questionback"
+                    android:backgroundTint="#E4E1E1">
+
+                    <TextView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Are all the details above correct ?"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13sdp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="@drawable/questionback"
+                    android:gravity="center">
+                    <Switch
+                        android:id="@+id/sw_details_correct"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <EditText
+                android:id="@+id/et_comment"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_90sdp"
+                android:hint="Make a Comment"
+                android:background="@drawable/questionback"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="left"
+                android:text=""
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:textColor="@color/black"
+
+                />
+
+            <EditText
+                android:id="@+id/et_arrive_on_site"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:background="@drawable/questionback"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="left"
+                android:inputType="none"
+                android:focusable="false"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:hint="Arrived on Site at "
+                android:padding="@dimen/_8sdp"
+                android:textSize="@dimen/_15sdp"
+                />
+            <EditText
+                android:id="@+id/et_gain_access"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:background="@drawable/questionback"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="left"
+                android:inputType="none"
+                android:focusable="false"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:hint="Gained Access to Work at"
+                android:padding="@dimen/_8sdp"
+                android:textSize="@dimen/_15sdp"
+                />
+            <EditText
+                android:id="@+id/et_standing_time"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:background="@drawable/questionback"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="left"
+                android:inputType="time"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:hint="Standing Time Incurred"
+                android:padding="@dimen/_8sdp"
+                android:textSize="@dimen/_15sdp"
+                />
+
+            <LinearLayout
+                android:id="@+id/ll_reason_delay"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_38sdp"
+                android:background="@drawable/questionback"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/_10sdp"
+                >
+
+                <Spinner
+                    android:id="@+id/sp_reason_delay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/reason_delay"
+                    />
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/ll_all_hazards_identified"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_20sdp"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:background="@drawable/questionback"
+                    android:backgroundTint="#E4E1E1">
+
+                    <TextView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Have all the live working hazards been identified ?"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13sdp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="@drawable/questionback"
+                    android:gravity="center">
+                    <Switch
+                        android:id="@+id/sw_all_hazards_identified"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/ll_isolation_path"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_20sdp"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:background="@drawable/questionback"
+                    android:backgroundTint="#E4E1E1">
+
+                    <TextView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Is the isolation points identified for the voltage connection ?"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13sdp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="@drawable/questionback"
+                    android:gravity="center">
+                    <Switch
+                        android:id="@+id/sw_isolation_path"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_isolation_path_current"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_20sdp"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:background="@drawable/questionback"
+                    android:backgroundTint="#E4E1E1">
+
+                    <TextView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Is the isolation points identified for the current connection ?"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13sdp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="@drawable/questionback"
+                    android:gravity="center">
+                    <Switch
+                        android:id="@+id/sw_isolation_path_current"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_identify_go_wrong"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_20sdp"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:background="@drawable/questionback"
+                    android:backgroundTint="#E4E1E1">
+
+                    <TextView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Have we identified what could potentially go wrong in each step of the installation and mitigated this risk ?"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13sdp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="@drawable/questionback"
+                    android:gravity="center">
+                    <Switch
+                        android:id="@+id/sw_identify_go_wrong"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_wearing_ppe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_20sdp"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:background="@drawable/questionback"
+                    android:backgroundTint="#E4E1E1">
+
+                    <TextView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Are all team members wearing PPE ?"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13sdp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="@drawable/questionback"
+                    android:gravity="center">
+                    <Switch
+                        android:id="@+id/sw_wearing_ppe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_emergency_exit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_20sdp"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:background="@drawable/questionback"
+                    android:backgroundTint="#E4E1E1">
+
+                    <TextView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Have we identified an emergency exit route if there is an issue ?"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13sdp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="@drawable/questionback"
+                    android:gravity="center">
+                    <Switch
+                        android:id="@+id/sw_emergency_exit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_emergency_contact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_20sdp"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:background="@drawable/questionback"
+                    android:backgroundTint="#E4E1E1">
+
+                    <TextView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Do we have emergency contact numbers available if there is an issue ?"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13sdp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="@drawable/questionback"
+                    android:gravity="center">
+                    <Switch
+                        android:id="@+id/sw_emergency_contact"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_site_safe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_20sdp"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:background="@drawable/questionback"
+                    android:backgroundTint="#E4E1E1">
+
+                    <TextView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Is the Site Generally Safe to Work On ?"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13sdp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="@drawable/questionback"
+                    android:gravity="center">
+                    <Switch
+                        android:id="@+id/sw_site_safe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/ll_safe_connect_voltage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_20sdp"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:background="@drawable/questionback"
+                    android:backgroundTint="#E4E1E1">
+
+                    <TextView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Have we worked out the safe process to connect the voltage connections ?"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13sdp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="@drawable/questionback"
+                    android:gravity="center">
+                    <Switch
+                        android:id="@+id/sw_safe_connect_voltage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_safe_connect_current"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_20sdp"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:background="@drawable/questionback"
+                    android:backgroundTint="#E4E1E1">
+
+                    <TextView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Have we worked out the safe process to connect the current connections ?"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13sdp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="@drawable/questionback"
+                    android:gravity="center">
+                    <Switch
+                        android:id="@+id/sw_safe_connect_current"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_switch_off"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_20sdp"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:background="@drawable/questionback"
+                    android:backgroundTint="#E4E1E1">
+
+                    <TextView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Do we need to switch off ?"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13sdp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="@drawable/questionback"
+                    android:gravity="center">
+                    <Switch
+                        android:id="@+id/sw_switch_off"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+
+            <ImageView
+                android:id="@+id/iv_voltage_connection"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_130sdp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:visibility="gone"
+                />
+
+            <Button
+                android:id="@+id/bt_image_voltage_connection"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:background="@drawable/search_cor"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Voltage Connection Point "
+                android:textSize="@dimen/_12sdp"
+                app:backgroundTint="@null" />
+
+
+            <ImageView
+                android:id="@+id/iv_current_connection"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_130sdp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:visibility="gone"
+                />
+
+            <Button
+                android:id="@+id/bt_image_current_connection"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:background="@drawable/search_cor"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Current Connection Point "
+                android:textSize="@dimen/_12sdp"
+                app:backgroundTint="@null" />
+
+                <TextView
+                    android:id="@+id/tv_before_installation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Before Installation Images"
+                    android:fontFamily="@font/roboto_medium"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/_16sdp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+
+                    />
+
+                <LinearLayout
+                    android:id="@+id/ll_main_before_install"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    >
+
+                <LinearLayout
+                    android:id="@+id/ll_before_install_images"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    >
+
+
+                    <ImageView
+                        android:id="@+id/iv_before_insatll1"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_130sdp"
+                        android:layout_gravity="center"
+                        android:visibility="gone"
+                        android:layout_weight="1"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ll_tampering" />
+
+                    <ImageView
+                        android:id="@+id/iv_before_insatll2"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_130sdp"
+                        android:layout_gravity="center"
+                        android:visibility="gone"
+                        android:layout_weight="1"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ll_tampering" />
+
+                    <ImageView
+                        android:id="@+id/iv_before_insatll3"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_130sdp"
+                        android:layout_gravity="center"
+                        android:visibility="gone"
+                        android:layout_weight="1"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ll_tampering" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_before_install_images2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    >
+
+
+                    <ImageView
+                        android:id="@+id/iv_before_insatll4"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_130sdp"
+                        android:layout_gravity="center"
+                        android:visibility="gone"
+                        android:layout_weight="1"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ll_tampering" />
+
+
+                    <ImageView
+                        android:id="@+id/iv_before_insatll5"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_130sdp"
+                        android:layout_gravity="center"
+                        android:visibility="gone"
+                        android:layout_weight="1"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ll_tampering" />
+
+                </LinearLayout>
+
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:id="@+id/ll_before_install_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    >
+
+                    <Button
+                        android:id="@+id/btn_before_install1"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"
+                        android:background="@drawable/search_cor"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Pic 1"
+                        android:textSize="@dimen/_8sdp"
+                        app:backgroundTint="@null" />
+
+                    <Button
+                        android:id="@+id/btn_before_install2"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"
+
+                        android:background="@drawable/search_cor"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Pic 2"
+                        android:textSize="@dimen/_8sdp"
+                        app:backgroundTint="@null" />
+
+                    <Button
+                        android:id="@+id/btn_before_install3"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"
+                        android:background="@drawable/search_cor"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Pic 3"
+                        android:textSize="@dimen/_8sdp"
+                        app:backgroundTint="@null" />
+
+                    <Button
+                        android:id="@+id/btn_before_install4"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"
+
+                        android:background="@drawable/search_cor"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Pic 4"
+                        android:textSize="@dimen/_8sdp"
+                        app:backgroundTint="@null" />
+
+                    <Button
+                        android:id="@+id/btn_before_install5"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"
+                        android:background="@drawable/search_cor"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Pic 5"
+                        android:textSize="@dimen/_8sdp"
+                        app:backgroundTint="@null" />
+                </LinearLayout>
+
+
+
+
+
+
+
+
+
+                <TextView
+                android:id="@+id/tv_signature"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Signature"
+                android:fontFamily="@font/roboto_medium"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="@dimen/_16sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_3sdp"
+                />
+            <TextView
+                android:id="@+id/tv_installation_electrician_signature"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Installation Electrician"
+                android:fontFamily="@font/roboto_medium"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_3sdp"
+                />
+            <com.simplify.ink.InkView
+                android:id="@+id/ink_installation_electrician_signature"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:background="@drawable/questionback"
+                android:layout_marginHorizontal="@dimen/_25sdp"
+                android:layout_height="@dimen/_180sdp" />
+            <Button
+                android:id="@+id/bt_installation_electrician_signature_clear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:background="@drawable/search_cor_red"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Clear Signature"
+                android:layout_gravity="center"
+                android:textSize="@dimen/_12sdp"
+                app:backgroundTint="@null" />
+
+
+
+
+            <TextView
+                android:id="@+id/tv_assistant_electrician_signature"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Assistant to Electrician"
+                android:fontFamily="@font/roboto_medium"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_3sdp"
+                />
+            <com.simplify.ink.InkView
+                android:id="@+id/ink_assistant_electrician_signature"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:background="@drawable/questionback"
+                android:layout_marginHorizontal="@dimen/_25sdp"
+                android:layout_height="@dimen/_180sdp" />
+            <Button
+                android:id="@+id/bt_assistant_electrician_signature_clear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:background="@drawable/search_cor_red"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Clear Signature"
+                android:layout_gravity="center"
+                android:textSize="@dimen/_12sdp"
+                app:backgroundTint="@null" />
+
+
+
+            <TextView
+                android:id="@+id/tv_bidvest_technician_signature"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Bidvest Technician on Site"
+                android:fontFamily="@font/roboto_medium"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_3sdp"
+                />
+            <com.simplify.ink.InkView
+                android:id="@+id/ink_bidvest_technician_signature"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:background="@drawable/questionback"
+                android:layout_marginHorizontal="@dimen/_25sdp"
+                android:layout_height="@dimen/_180sdp" />
+            <Button
+                android:id="@+id/bt_bidvest_technician_signature_clear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:background="@drawable/search_cor_red"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Clear Signature"
+                android:layout_gravity="center"
+                android:textSize="@dimen/_12sdp"
+                app:backgroundTint="@null" />
+
+
+            <Button
+                android:id="@+id/bt_next"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:background="@drawable/search_cor"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Next"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:textSize="@dimen/_16sdp"
+                app:backgroundTint="@null" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

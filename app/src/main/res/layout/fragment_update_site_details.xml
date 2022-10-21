@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".UpdateSiteDetails">
+
+
+    <TextView
+        android:id="@+id/tv_"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_medium"
+        android:text="Update Site Details and Close"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_16sdp"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.08"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/scr_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_"
+        app:layout_constraintVertical_bias="0.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+
+            <!--            <EditText-->
+            <!--                android:id="@+id/et_input_code"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="@dimen/_40sdp"-->
+            <!--                android:layout_marginHorizontal="@dimen/_20sdp"-->
+            <!--                android:layout_marginTop="@dimen/_20sdp"-->
+            <!--                android:background="@drawable/questionback"-->
+            <!--                android:fontFamily="@font/roboto_medium"-->
+            <!--                android:gravity="left"-->
+            <!--                android:hint="Input Code"-->
+            <!--                android:padding="@dimen/_8sdp"-->
+            <!--                android:textSize="@dimen/_15sdp" />-->
+
+            <LinearLayout
+                android:id="@+id/ll_ref_with_bidvest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_20sdp"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:background="@drawable/questionback"
+                    android:backgroundTint="#E4E1E1">
+
+                    <TextView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Did you close the Ref with Bidvest ?"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13sdp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="@drawable/questionback"
+                    android:gravity="center">
+                    <Switch
+                        android:id="@+id/sw_ref_with_bidvest"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_all_widget"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+
+
+                <TextView
+                    android:id="@+id/tv_after_installation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="After Installation Pictures"
+                    android:fontFamily="@font/roboto_medium"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/_16sdp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+
+                    />
+
+
+                <ImageView
+                    android:id="@+id/iv_voltage_connection"
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="@dimen/_130sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:visibility="gone"
+                    />
+
+                <Button
+                    android:id="@+id/bt_image_voltage_connection"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:background="@drawable/search_cor"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Voltage Connection Point "
+                    android:textSize="@dimen/_12sdp"
+                    app:backgroundTint="@null" />
+
+
+                <ImageView
+                    android:id="@+id/iv_current_connection"
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="@dimen/_130sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:visibility="gone"
+                    />
+
+                <Button
+                    android:id="@+id/bt_image_current_connection"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:background="@drawable/search_cor"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Current Connection Point "
+                    android:textSize="@dimen/_12sdp"
+                    app:backgroundTint="@null" />
+
+
+
+                <LinearLayout
+                    android:id="@+id/ll_main_After_install"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    >
+
+                    <LinearLayout
+                        android:id="@+id/ll_After_install_images"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        >
+
+
+                        <ImageView
+                            android:id="@+id/iv_After_insatll1"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_130sdp"
+                            android:layout_gravity="center"
+                            android:visibility="gone"
+                            android:layout_weight="1"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/ll_tampering" />
+
+                        <ImageView
+                            android:id="@+id/iv_After_insatll2"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_130sdp"
+                            android:layout_gravity="center"
+                            android:visibility="gone"
+                            android:layout_weight="1"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/ll_tampering" />
+
+                        <ImageView
+                            android:id="@+id/iv_After_insatll3"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_130sdp"
+                            android:layout_gravity="center"
+                            android:visibility="gone"
+                            android:layout_weight="1"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/ll_tampering" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_After_install_images2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        >
+
+
+                        <ImageView
+                            android:id="@+id/iv_After_insatll4"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_130sdp"
+                            android:layout_gravity="center"
+                            android:visibility="gone"
+                            android:layout_weight="1"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/ll_tampering" />
+
+
+                        <ImageView
+                            android:id="@+id/iv_After_insatll5"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_130sdp"
+                            android:layout_gravity="center"
+                            android:visibility="gone"
+                            android:layout_weight="1"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/ll_tampering" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:id="@+id/ll_After_install_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    >
+
+                    <Button
+                        android:id="@+id/btn_After_install1"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"
+                        android:background="@drawable/search_cor"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Pic 1"
+                        android:textSize="@dimen/_8sdp"
+                        app:backgroundTint="@null" />
+
+                    <Button
+                        android:id="@+id/btn_After_install2"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"
+
+                        android:background="@drawable/search_cor"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Pic 2"
+                        android:textSize="@dimen/_8sdp"
+                        app:backgroundTint="@null" />
+
+                    <Button
+                        android:id="@+id/btn_After_install3"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"
+                        android:background="@drawable/search_cor"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Pic 3"
+                        android:textSize="@dimen/_8sdp"
+                        app:backgroundTint="@null" />
+
+                    <Button
+                        android:id="@+id/btn_After_install4"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"
+
+                        android:background="@drawable/search_cor"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Pic 4"
+                        android:textSize="@dimen/_8sdp"
+                        app:backgroundTint="@null" />
+
+                    <Button
+                        android:id="@+id/btn_After_install5"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"
+                        android:background="@drawable/search_cor"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Pic 5"
+                        android:textSize="@dimen/_8sdp"
+                        app:backgroundTint="@null" />
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/tv_signature"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Signature"
+                    android:fontFamily="@font/roboto_medium"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/_16sdp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    android:layout_marginBottom="@dimen/_3sdp"
+                    />
+                <TextView
+                    android:id="@+id/tv_bidvest_tech_signature"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Signature Bidvest Tech"
+                    android:fontFamily="@font/roboto_medium"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_3sdp"
+                    />
+                <com.simplify.ink.InkView
+                    android:id="@+id/ink_bidvest_tech_signature1"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:background="@drawable/questionback"
+                    android:layout_marginHorizontal="@dimen/_25sdp"
+                    android:layout_height="@dimen/_180sdp" />
+                <Button
+                    android:id="@+id/btn_bidvest_tech_signature_clear1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:background="@drawable/search_cor_red"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Clear Signature"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/_12sdp"
+                    app:backgroundTint="@null" />
+
+
+
+
+                <TextView
+                    android:id="@+id/tv_karebo_tech_signature"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Signature Karebo Tech"
+                    android:fontFamily="@font/roboto_medium"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_3sdp"
+                    />
+                <com.simplify.ink.InkView
+                    android:id="@+id/ink_karebo_tech_signature1"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:background="@drawable/questionback"
+                    android:layout_marginHorizontal="@dimen/_25sdp"
+                    android:layout_height="@dimen/_180sdp" />
+                <Button
+                    android:id="@+id/btn_karebo_tech_signature_clear1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:background="@drawable/search_cor_red"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Clear Signature"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/_12sdp"
+                    app:backgroundTint="@null" />
+
+
+
+
+
+                <Button
+                    android:id="@+id/bt_next"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:background="@drawable/search_cor"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Next"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:textSize="@dimen/_16sdp"
+                    app:backgroundTint="@null" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
