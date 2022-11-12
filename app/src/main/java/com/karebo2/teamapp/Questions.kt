@@ -85,9 +85,15 @@ class Questions : Fragment() {
                        LoaderHelper.dissmissLoader()
                         val bundle = Bundle()
                         bundle.putString("msg",response.body()?.string() )
-                        Navigation.findNavController(root).navigate(
-                            R.id.action_nav_question_to_nav_otpscreen,bundle
+                        try {
+                            Navigation.findNavController(root).navigate(
+                                R.id.action_nav_question_to_nav_otpscreen,bundle
                             )
+                        }catch (e:Exception){
+
+                        }
+
+
                         binding.tvOtp.text=response.body()?.string()
                     }
                     else    {

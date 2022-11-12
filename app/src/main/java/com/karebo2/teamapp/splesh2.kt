@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.karebo2.teamapp.Api.Api
@@ -20,6 +21,8 @@ class splesh2 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splesh2)
+        var version: TextView = findViewById(R.id.tv_version)
+        version.text="Meter Installation 2022\nversion "+BuildConfig.VERSION_NAME
 
         loadCodeList()
     }

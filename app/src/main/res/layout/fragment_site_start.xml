@@ -52,6 +52,10 @@
 <!--                android:padding="@dimen/_8sdp"-->
 <!--                android:textSize="@dimen/_15sdp" />-->
 
+
+
+
+
             <LinearLayout
                 android:id="@+id/ll_ref_with_bidvest"
                 android:layout_width="match_parent"
@@ -152,7 +156,7 @@
             <EditText
                 android:id="@+id/et_site_address"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_40sdp"
+                android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_20sdp"
                 android:background="@drawable/questionback"
                 android:fontFamily="@font/roboto_medium"
@@ -839,6 +843,7 @@
                 android:background="@drawable/search_cor"
                 android:fontFamily="@font/roboto_medium"
                 android:text="Voltage Connection Point "
+                android:drawableEnd="@drawable/ic_baseline_camera_alt_24"
                 android:textSize="@dimen/_12sdp"
                 app:backgroundTint="@null" />
 
@@ -861,6 +866,7 @@
                 android:background="@drawable/search_cor"
                 android:fontFamily="@font/roboto_medium"
                 android:text="Current Connection Point "
+                android:drawableEnd="@drawable/ic_baseline_camera_alt_24"
                 android:textSize="@dimen/_12sdp"
                 app:backgroundTint="@null" />
 
@@ -1000,6 +1006,7 @@
                         android:background="@drawable/search_cor"
                         android:fontFamily="@font/roboto_medium"
                         android:text="Pic 1"
+
                         android:textSize="@dimen/_8sdp"
                         app:backgroundTint="@null" />
 

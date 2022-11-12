@@ -133,6 +133,9 @@
             app:popUpTo="@id/nav_about"
             android:id="@+id/action_nav_accessstatus_to_nav_about"
             app:destination="@id/nav_about" />
+        <action
+            android:id="@+id/action_nav_accessstatus_to_nav_siteStart"
+            app:destination="@id/nav_siteStart" />
 
     </fragment>
     <fragment
@@ -263,6 +266,9 @@
             app:popUpTo="@id/nav_about"
             android:id="@+id/action_nav_signOff_to_nav_about"
             app:destination="@id/nav_about" />
+        <action
+            android:id="@+id/action_nav_signOff_to_nav_meterlocation"
+            app:destination="@id/nav_meterlocation" />
 
     </fragment>
 </navigation>

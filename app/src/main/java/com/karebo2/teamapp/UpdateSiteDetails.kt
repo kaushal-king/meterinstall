@@ -53,16 +53,16 @@ class UpdateSiteDetails : Fragment() {
     private var PhotoAfterInstallFile4: File? = null
     private var PhotoAfterInstallFile5: File? = null
     lateinit var photoname: String
-    var  locationn : Location? =null
+    var  locationn : Location? =ConstantHelper.locationn
 
 
-    private val permission = arrayOf(
-        Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.ACCESS_COARSE_LOCATION,
-
-        )
-    lateinit var locationPermissionLauncher: ActivityResultLauncher<Array<String>>
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
+//    private val permission = arrayOf(
+//        Manifest.permission.ACCESS_FINE_LOCATION,
+//        Manifest.permission.ACCESS_COARSE_LOCATION,
+//
+//        )
+//    lateinit var locationPermissionLauncher: ActivityResultLauncher<Array<String>>
+//    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
 
 
@@ -74,43 +74,43 @@ class UpdateSiteDetails : Fragment() {
         _binding = FragmentUpdateSiteDetailsBinding.inflate(
             inflater,container,false)
         val root: View = binding.root
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
-
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-
-
-        }
-        else{
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestlocationPermission()
-            }
-        }
-        Log.e("TAG", "location: ")
-
-        LoaderHelper.showLoader(requireContext())
-
-        val cancellationTokenSource = CancellationTokenSource()
-        fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, cancellationTokenSource.token)
-            .addOnSuccessListener { location ->
-                Log.e("Location", "location is found: $location")
-                locationn=location
-                LoaderHelper.dissmissLoader()
-
-            }
-            .addOnFailureListener { exception ->
-                Toast.makeText(requireContext(),"Oops location failed to Fetch: $exception",Toast.LENGTH_SHORT).show()
-                Log.e("Location", "Oops location failed with exception: $exception")
-                LoaderHelper.dissmissLoader()
-            }
-
+//
+//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+//
+//        if (ActivityCompat.checkSelfPermission(
+//                requireContext(),
+//                Manifest.permission.ACCESS_FINE_LOCATION
+//            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+//                requireContext(),
+//                Manifest.permission.ACCESS_COARSE_LOCATION
+//            ) != PackageManager.PERMISSION_GRANTED
+//        ) {
+//
+//
+//        }
+//        else{
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                requestlocationPermission()
+//            }
+//        }
+//        Log.e("TAG", "location: ")
+//
+//        LoaderHelper.showLoader(requireContext())
+//
+//        val cancellationTokenSource = CancellationTokenSource()
+//        fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, cancellationTokenSource.token)
+//            .addOnSuccessListener { location ->
+//                Log.e("Location", "location is found: $location")
+//                locationn=location
+//                LoaderHelper.dissmissLoader()
+//
+//            }
+//            .addOnFailureListener { exception ->
+//                Toast.makeText(requireContext(),"Oops location failed to Fetch: $exception",Toast.LENGTH_SHORT).show()
+//                Log.e("Location", "Oops location failed with exception: $exception")
+//                LoaderHelper.dissmissLoader()
+//            }
+//
 
 
 
@@ -251,32 +251,32 @@ class UpdateSiteDetails : Fragment() {
 
 
 
-    private fun requestlocationPermission() {
-
-        when {
-            hasPermissions2(requireContext(), *permission) -> {
-                if (ActivityCompat.checkSelfPermission(
-                        requireContext(),
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                    ) == PackageManager.PERMISSION_GRANTED
-                ) {
-
-                }
-            }
-            else -> {
-                Toast.makeText(requireContext(), " Allow the  Permission", Toast.LENGTH_LONG).show()
-                locationPermission()
-            }
-        }
-
-    }
-    private fun hasPermissions2(context: Context, vararg permissions: String): Boolean =
-        permissions.all {
-            ActivityCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
-        }
-    private fun locationPermission() {
-        locationPermissionLauncher.launch(permission)
-    }
+//    private fun requestlocationPermission() {
+//
+//        when {
+//            hasPermissions2(requireContext(), *permission) -> {
+//                if (ActivityCompat.checkSelfPermission(
+//                        requireContext(),
+//                        Manifest.permission.ACCESS_FINE_LOCATION
+//                    ) == PackageManager.PERMISSION_GRANTED
+//                ) {
+//
+//                }
+//            }
+//            else -> {
+//                Toast.makeText(requireContext(), " Allow the  Permission", Toast.LENGTH_LONG).show()
+//                locationPermission()
+//            }
+//        }
+//
+//    }
+//    private fun hasPermissions2(context: Context, vararg permissions: String): Boolean =
+//        permissions.all {
+//            ActivityCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
+//        }
+//    private fun locationPermission() {
+//        locationPermissionLauncher.launch(permission)
+//    }
 
 
 
@@ -344,12 +344,15 @@ class UpdateSiteDetails : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putString("imagePath", mPhotoFile.toString())
+        outState.putString("photoname",photoname)
         Log.e("TAG", "onSaveInstanceState: ")
         super.onSaveInstanceState(outState)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         setImageFile(savedInstanceState?.get("imagePath").toString())
+        setPhotonamee(savedInstanceState?.get("photoname").toString())
+        Log.e("TAG", "onRestoreInstanceState photoname: " + savedInstanceState?.get("photoname"))
         Log.e("TAG", "onRestoreInstanceState: " + savedInstanceState?.get("imagePath"))
         super.onViewStateRestored(savedInstanceState)
     }
@@ -361,6 +364,9 @@ class UpdateSiteDetails : Fragment() {
 
     fun setImageFile(path: String) {
         mPhotoFile = File(path)
+    }
+    fun setPhotonamee(name: String) {
+        photoname = name
     }
 
 
@@ -830,18 +836,19 @@ class UpdateSiteDetails : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
-        locationPermissionLauncher =
-            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-                if (!permissions.containsValue(false)) {
-                    if (ActivityCompat.checkSelfPermission(
-                            requireContext(),
-                            Manifest.permission.ACCESS_FINE_LOCATION
-                        ) == PackageManager.PERMISSION_GRANTED
-                    ) {
-//                        mMap.isMyLocationEnabled = true
-                    }
-                }
-            }
+//        locationPermissionLauncher =
+//            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+//                if (!permissions.containsValue(false)) {
+//                    if (ActivityCompat.checkSelfPermission(
+//                            requireContext(),
+//                            Manifest.permission.ACCESS_FINE_LOCATION
+//                        ) == PackageManager.PERMISSION_GRANTED
+//                    ) {
+////                        mMap.isMyLocationEnabled = true
+//                    }
+//                }
+//            }
+//
         super.onCreate(savedInstanceState)
     }
 

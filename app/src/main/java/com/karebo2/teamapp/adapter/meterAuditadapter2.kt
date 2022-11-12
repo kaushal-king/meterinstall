@@ -46,9 +46,16 @@ class meterAuditadapter2(private val mList: List<SubJobCard>,
 
             ConstantHelper.currentSelectdSubMeter=mList[viewHolder.adapterPosition]
 
-            Navigation.findNavController(view2).navigate(
-                R.id.action_nav_subMeter_to_nav_accessstatus
-            )
+
+            try {
+                Navigation.findNavController(view2).navigate(
+                    R.id.action_nav_subMeter_to_nav_accessstatus
+                )
+            }catch (e:Exception){
+
+            }
+
+
 
         }
         return viewHolder

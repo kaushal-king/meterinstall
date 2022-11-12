@@ -15,7 +15,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
-
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
@@ -29,15 +28,12 @@ import com.karebo2.teamapp.dataclass.meterData.meterauditDataModel
 import com.karebo2.teamapp.roomdata.RoomDb
 import com.karebo2.teamapp.roomdata.mainbody
 import com.karebo2.teamapp.roomdata.photobody
-
-import com.karebo2.teamapp.utils.GsonParser
-import com.karebo2.teamapp.utils.LoaderHelper
 import com.karebo2.teamapp.sharedpreference.SharedPreferenceHelper
 import com.karebo2.teamapp.utils.ConstantHelper
+import com.karebo2.teamapp.utils.GsonParser
+import com.karebo2.teamapp.utils.LoaderHelper
 import com.the.firsttask.utils.NetworkUtils
 import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
-
 import okhttp3.ResponseBody
 import org.json.JSONArray
 import org.json.JSONObject
@@ -60,7 +56,8 @@ class AccessStatus : Fragment() {
 
 
 
-    var  locationn : Location? =null
+
+    var currentSelected:meterauditDataModel?=null
 
     private val permission = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
@@ -118,31 +115,29 @@ class AccessStatus : Fragment() {
                 requestlocationPermission()
             }
         }
-        Log.e("TAG", "location: ", )
+        Log.e("TAG", "location: ")
         LoaderHelper.showLoader(requireContext())
         val cancellationTokenSource = CancellationTokenSource()
         fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, cancellationTokenSource.token)
             .addOnSuccessListener { location ->
                 Log.e("Location", "location is found: $location")
-                locationn=location
+                ConstantHelper.locationn=location
                 LoaderHelper.dissmissLoader()
 
             }
             .addOnFailureListener { exception ->
                 Toast.makeText(requireContext(),"Oops location failed to Fetch: $exception",Toast.LENGTH_SHORT).show()
                 Log.e("Location", "Oops location failed with exception: $exception")
+                val loc = Location("dummyprovider")
+                currentSelected?.latitude?.let { loc.setLatitude(it) }
+                currentSelected?.longitude?.let { loc.setLongitude(it) }
+                ConstantHelper.locationn=loc
                 LoaderHelper.dissmissLoader()
             }
 
 
-
-
-
-
-
-
-
-
+        var data=  SharedPreferenceHelper.getInstance(requireContext()).getCurrentSelected()
+        currentSelected = GsonParser.gsonParser!!.fromJson(data, meterauditDataModel::class.java)
 
 
         accessStatus()
@@ -189,9 +184,16 @@ class AccessStatus : Fragment() {
             }
             else{
                 addInModel()
-                Navigation.findNavController(root).navigate(
-                    R.id.action_nav_accessstatus_to_nav_meterlocation
-                )
+
+                try{
+                    Navigation.findNavController(root).navigate(
+                        R.id.action_nav_accessstatus_to_nav_siteStart
+                    )
+                }
+                catch (e:Exception){
+
+                }
+
             }
 
         }
@@ -282,21 +284,21 @@ class AccessStatus : Fragment() {
 
         var Task = JSONObject()
 
-        if(ConstantHelper.currentSelectd.subJobCards==null ||ConstantHelper.currentSelectd.subJobCards!!.isEmpty()){
-            Task.put("JobCardId", ConstantHelper.currentSelectd.jobCardId)
-            Task.put("Vertices", JSONArray(ConstantHelper.currentSelectd.vertices) )
-            Task.put("SGCode", ConstantHelper.currentSelectd.sgCode)
-            Task.put("ParcelAddress",ConstantHelper.currentSelectd.parcelAddress)
-            Task.put("PostedOn",ConstantHelper.currentSelectd.postedOn)
-            Task.put("Latitude", ConstantHelper.currentSelectd.latitude)
-            Task.put("Longitude", ConstantHelper.currentSelectd.longitude)
-            Task.put("Project", ConstantHelper.currentSelectd.project)
-            Task.put("Team", ConstantHelper.currentSelectd.team)
-            Task.put("CardType", ConstantHelper.currentSelectd.cardType)
-            Task.put("Municipality", ConstantHelper.currentSelectd.municipality)
-            Task.put("SubJobCards", ConstantHelper.currentSelectd.subJobCards)
-            Task.put("SubJobCardIds", ConstantHelper.currentSelectd.subJobCards)
-            Task.put("HideInInbox", ConstantHelper.currentSelectd.hideInInbox)
+        if(currentSelected!!.subJobCards==null ||currentSelected!!.subJobCards!!.isEmpty()){
+            Task.put("JobCardId", currentSelected!!.jobCardId)
+            Task.put("Vertices", JSONArray(currentSelected!!.vertices) )
+            Task.put("SGCode", currentSelected!!.sgCode)
+            Task.put("ParcelAddress",currentSelected!!.parcelAddress)
+            Task.put("PostedOn",currentSelected!!.postedOn)
+            Task.put("Latitude", currentSelected!!.latitude)
+            Task.put("Longitude", currentSelected!!.longitude)
+            Task.put("Project", currentSelected!!.project)
+            Task.put("Team", currentSelected!!.team)
+            Task.put("CardType", currentSelected!!.cardType)
+            Task.put("Municipality", currentSelected!!.municipality)
+            Task.put("SubJobCards", currentSelected!!.subJobCards)
+            Task.put("SubJobCardIds", currentSelected!!.subJobCards)
+            Task.put("HideInInbox", currentSelected!!.hideInInbox)
 
         }else{
             Task.put("JobCardId", ConstantHelper.currentSelectdSubMeter.task!!.jobCardId)
@@ -337,12 +339,12 @@ class AccessStatus : Fragment() {
          var Picture = JSONObject()
 
 
-         Log.e("TAG", "addInModel:timestemp "+formattedDate, )
+         Log.e("TAG", "addInModel:timestemp " + formattedDate)
          Access.put("Timestamp",formattedDate)
 
-         Location.put("Latitude",locationn?.latitude)
-         Location.put("Longitude",locationn?.longitude)
-         Location.put("Accuracy",locationn?.accuracy)
+         Location.put("Latitude",ConstantHelper.locationn?.latitude)
+         Location.put("Longitude",ConstantHelper.locationn?.longitude)
+         Location.put("Accuracy",ConstantHelper.locationn?.accuracy)
          Location.put("Timestamp",formattedDate)
 
          Access.put("Location",Location)
@@ -350,10 +352,10 @@ class AccessStatus : Fragment() {
 
 
          Access.put("Access",findAccess())
-        if(ConstantHelper.currentSelectd.subJobCards==null ||ConstantHelper.currentSelectd.subJobCards!!.isEmpty())
+        if(currentSelected!!.subJobCards==null ||currentSelected!!.subJobCards!!.isEmpty())
             {
-                Access.put("JobCardId", ConstantHelper.currentSelectd.jobCardId)
-                Access.put("Team", ConstantHelper.currentSelectd.team)
+                Access.put("JobCardId", currentSelected!!.jobCardId)
+                Access.put("Team", currentSelected!!.team)
             }else{
             Access.put("JobCardId", ConstantHelper.currentSelectdSubMeter.task!!.jobCardId)
             Access.put("Team", ConstantHelper.currentSelectdSubMeter.task!!.team)
@@ -451,7 +453,7 @@ class AccessStatus : Fragment() {
 
 fun showConfirmDialog(root:View){
     var alert: AlertDialog? = null
-    val builder = AlertDialog.Builder(requireContext(),)
+    val builder = AlertDialog.Builder(requireContext())
     val inflater = requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     val v = inflater.inflate(R.layout.dialog_submitmeter, null)
     builder.setView(v)
@@ -490,9 +492,9 @@ fun showConfirmDialog(root:View){
 
         var jobCardId=""
 
-        if(ConstantHelper.currentSelectd.subJobCards==null ||ConstantHelper.currentSelectd.subJobCards!!.isEmpty())
+        if(currentSelected!!.subJobCards==null ||currentSelected!!.subJobCards!!.isEmpty())
         {
-            jobCardId= ConstantHelper.currentSelectd.jobCardId.toString();
+            jobCardId= currentSelected!!.jobCardId.toString();
         }else{
             jobCardId=ConstantHelper.currentSelectdSubMeter.task!!.jobCardId
         }
@@ -511,7 +513,7 @@ fun showConfirmDialog(root:View){
 
             Toast.makeText(requireContext(),"successFull Added offline", Toast.LENGTH_SHORT)
                 .show()
-            Log.e("TAG", "submitmeter: offline ", )
+            Log.e("TAG", "submitmeter: offline ")
 
 
 
@@ -529,10 +531,15 @@ fun showConfirmDialog(root:View){
 
             val bundle = Bundle()
             bundle.putString("data","from signature" )
-            Navigation.findNavController(root).navigate(
-                R.id.action_nav_accessstatus_to_nav_meteraudit,bundle
+            try {
+                Navigation.findNavController(root).navigate(
+                    R.id.action_nav_accessstatus_to_nav_meteraudit,bundle
 
-            )
+                )
+            }catch (e:Exception){
+
+            }
+
 
         }
         else{
@@ -567,20 +574,26 @@ fun showConfirmDialog(root:View){
 
                             Toast.makeText(requireContext(),"successFull Added", Toast.LENGTH_SHORT)
                                 .show()
-                            Log.e("TAG", "submitmeter: "+response.body()?.string(), )
+                            Log.e("TAG", "submitmeter: " + response.body()?.string())
 
 
                             val bundle = Bundle()
                             bundle.putString("data","from signature" )
-                            Navigation.findNavController(root).navigate(
-                                R.id.action_nav_accessstatus_to_nav_meteraudit,bundle
+                            try{
+                                Navigation.findNavController(root).navigate(
+                                    R.id.action_nav_accessstatus_to_nav_meteraudit,bundle
 
-                            )
+                                )
+                            }catch (e:Exception){
+
+                            }
+
+
 
                         }
                         else    {
                             LoaderHelper.dissmissLoader()
-                            Log.e("TAG", "submitmeter2: "+response.body()?.string(), )
+                            Log.e("TAG", "submitmeter2: " + response.body()?.string())
                             Toast.makeText(requireContext(),"some error occured"+ response.body()?.string(), Toast.LENGTH_SHORT)
                                 .show()
                         }
@@ -591,7 +604,7 @@ fun showConfirmDialog(root:View){
 //                    Log.e("TAG", "AddToolBox :"+response.body()?.string(), )
 //                    Log.e("TAG", "AddToolBox :"+response.errorBody()?.string(), )
                         LoaderHelper.dissmissLoader()
-                        Log.e("TAG", "submitmeter3: "+response.errorBody()?.string(), )
+                        Log.e("TAG", "submitmeter3: " + response.errorBody()?.string())
                         Toast.makeText(requireContext(),
                             "some error occured"+response.errorBody()?.string(), Toast.LENGTH_SHORT)
                             .show()
@@ -601,7 +614,7 @@ fun showConfirmDialog(root:View){
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     LoaderHelper.dissmissLoader()
-                    Log.e("TAG", "onFailure: "+t.localizedMessage, )
+                    Log.e("TAG", "onFailure: " + t.localizedMessage)
                     Toast.makeText(requireContext(), "Network Error", Toast.LENGTH_SHORT)
                         .show()
                 }
@@ -628,7 +641,7 @@ fun showConfirmDialog(root:View){
 
 //            requests.add( api?.addPhoto64(it.uuid,it.bodyy)!!)
                 photobodyDao?.addphotobody(photobody(it.uuid, it.bodyy))
-                Log.e("TAG", "addAllPhoto uuid: ${it.uuid}",)
+                Log.e("TAG", "addAllPhoto uuid: ${it.uuid}")
 //            Log.e("TAG", "addAllPhoto body: ${it.bodyy}", )
             }
 
@@ -648,7 +661,7 @@ fun showConfirmDialog(root:View){
             ConstantHelper.photoList.forEach {
 
                 requests.add(api?.addPhoto64(it.uuid, it.bodyy)!!)
-                Log.e("TAG", "addAllPhoto uuid: ${it.uuid}",)
+                Log.e("TAG", "addAllPhoto uuid: ${it.uuid}")
 //               Log.e("TAG", "addAllPhoto body: ${it.bodyy}", )
             }
 
@@ -657,7 +670,7 @@ fun showConfirmDialog(root:View){
                 .take(requests.size.toLong())
                 // executed when the channel is closed or disposed
                 .doFinally {
-                    Log.e("TAG", "addAllPhoto final: ",)
+                    Log.e("TAG", "addAllPhoto final: ")
 
                     ConstantHelper.photoList = mutableListOf()
                     LoaderHelper.dissmissLoader()

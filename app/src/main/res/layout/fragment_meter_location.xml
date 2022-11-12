@@ -115,7 +115,7 @@
         android:layout_marginHorizontal="@dimen/_20sdp"
         android:background="@drawable/search_cor"
         android:fontFamily="@font/roboto_medium"
-        android:text="Next : Site and Safety"
+        android:text="Submit"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_5sdp"
         android:textSize="@dimen/_14sdp"

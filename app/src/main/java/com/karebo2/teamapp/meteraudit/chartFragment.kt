@@ -181,7 +181,8 @@ class chartFragment : Fragment() {
 
             set1.setColors(
                 intArrayOf(R.color.green2),
-                requireContext()
+                requireActivity()
+
             )
             set1.values = failedvalues
             set1.label = "Failed"
@@ -190,7 +191,7 @@ class chartFragment : Fragment() {
             set2 = BarDataSet(values, "Audited")
             set2.setColors(
                 intArrayOf(R.color.green2),
-                requireContext()
+               requireActivity()
             )
             set2.values = auditedvalues
             set2.label = "Audited"
@@ -199,7 +200,7 @@ class chartFragment : Fragment() {
             set3 = BarDataSet(values, "Meters")
             set3.setColors(
                 intArrayOf(R.color.green2),
-                requireContext()
+                requireActivity()
             )
             set3.values = metersvalues
             set3.label = "Meters"
@@ -208,7 +209,7 @@ class chartFragment : Fragment() {
             set4 = BarDataSet(values, "Completed")
             set4.setColors(
                 intArrayOf(R.color.green2),
-                requireContext()
+                requireActivity()
             )
             set4.values = completevalues
             set4.label = "Completed"
@@ -218,7 +219,7 @@ class chartFragment : Fragment() {
 
             set5.setColors(
                 intArrayOf(R.color.green2),
-                requireContext()
+               requireActivity()
             )
 
 

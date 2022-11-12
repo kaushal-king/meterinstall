@@ -18,6 +18,7 @@ import com.karebo2.teamapp.utils.GsonParser
 import com.karebo2.teamapp.utils.LoaderHelper
 import com.karebo2.teamapp.sharedpreference.SharedPreferenceHelper
 import com.karebo2.teamapp.utils.ConstantHelper
+import com.the.firsttask.utils.NetworkUtils
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -55,13 +56,6 @@ class OtpScreen : Fragment() {
             resendOtp()
         }
 
-        if(SharedPreferenceHelper.getInstance(requireContext()).getOtp()!="null"){
-            binding.etOtp.setText(SharedPreferenceHelper.getInstance(requireContext()).getOtp())
-//            loadMeter(binding.etOtp.text.toString(),root)
-            loadJobCard(binding.etOtp.text.toString(),root)
-            Log.e("TAG", "Stored PIN: "+ SharedPreferenceHelper.getInstance(requireContext()).getOtp() )
-
-        }
 
         binding.btLoadJobCard.setOnClickListener{
             if( binding.etOtp.text.isEmpty()){
@@ -78,6 +72,33 @@ class OtpScreen : Fragment() {
         }
 
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        if(SharedPreferenceHelper.getInstance(requireContext()).getOtp()!="null"){
+            binding.etOtp.setText(SharedPreferenceHelper.getInstance(requireContext()).getOtp())
+//            loadMeter(binding.etOtp.text.toString(),root)
+
+            if(NetworkUtils.isConnected==false){
+                Log.e("TAG", "onCreateView: "+"otp is present", )
+                try {
+                    Navigation.findNavController(binding.root).navigate(
+                        R.id.action_nav_otpscreen_to_nav_meteraudit,
+                    )
+                }catch (e:Exception){
+                    Log.e("TAG", "onCreateView: "+e.localizedMessage.toString(), )
+                }
+            }else{
+                loadJobCard(binding.etOtp.text.toString(),binding.root)
+                Log.e("TAG", "Stored PIN: "+ SharedPreferenceHelper.getInstance(requireContext()).getOtp() )
+            }
+
+
+
+        }
+
     }
 
 //    fun navigateMeterAudit(root:View){
@@ -202,10 +223,16 @@ class OtpScreen : Fragment() {
                              print("exception is" + e.stackTraceToString())
                          }
 
+                         try {
+                             Navigation.findNavController(root).navigate(
+                                 R.id.action_nav_otpscreen_to_nav_meteraudit,
+                             )
+                         }catch (e:Exception){
 
-                         Navigation.findNavController(root).navigate(
-                                R.id.action_nav_otpscreen_to_nav_meteraudit,
-                                )
+                         }
+
+
+
 
                      }
                      else    {
@@ -220,19 +247,29 @@ class OtpScreen : Fragment() {
                  else{
                      LoaderHelper.dissmissLoader()
                      SharedPreferenceHelper.getInstance(requireContext()).setOtp("null")
-                     Navigation.findNavController(root).navigate(
-                         R.id.action_nav_otpscreen_to_nav_question,
-                     )
-                     Toast.makeText(requireContext(),
+
+                     try {
+
+                         Navigation.findNavController(root).navigate(
+                             R.id.action_nav_otpscreen_to_nav_question,
+                         )
+
+
+                     }catch (e:Exception){
+
+                     }
+
+                     Toast.makeText(requireActivity(),
                          response.errorBody()?.string(), Toast.LENGTH_SHORT)
                          .show()
+
                  }
 
              }
 
              override fun onFailure(call: Call<List<meterauditDataModel>>, t: Throwable) {
                  LoaderHelper.dissmissLoader()
-                 Toast.makeText(requireContext(), "Network Error", Toast.LENGTH_SHORT)
+                 Toast.makeText(requireActivity(), "Network Error", Toast.LENGTH_SHORT)
                      .show()
              }
 
@@ -287,7 +324,7 @@ class OtpScreen : Fragment() {
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 LoaderHelper.dissmissLoader()
-                Toast.makeText(requireContext(), "Network Error", Toast.LENGTH_SHORT)
+                Toast.makeText(requireActivity(), "Network Error", Toast.LENGTH_SHORT)
                     .show()
             }
 

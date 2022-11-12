@@ -18,5 +18,6 @@ data class meterauditDataModel(
     val subJobCardIds: List<String>? = null,
     val subJobCards: List<SubJobCard>? = null,
     val team: String? = null,
-    val vertices: List<String>? = null
+    val vertices: List<String>? = null,
+    val dictionary: Dictionary?=null
 )

@@ -991,6 +991,7 @@
                 android:background="@drawable/search_cor"
                 android:fontFamily="@font/roboto_medium"
                 android:text="Sim Card Photo"
+                android:drawableEnd="@drawable/ic_baseline_camera_alt_24"
                 android:textSize="@dimen/_12sdp"
                 app:backgroundTint="@null" />
 

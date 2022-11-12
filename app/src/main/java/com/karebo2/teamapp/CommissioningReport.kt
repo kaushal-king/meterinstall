@@ -50,34 +50,34 @@ class CommissioningReport : Fragment() {
     private var PhotoSmsConfigFile: File? = null
     private var PhotoGprsSignalFile: File? = null
     lateinit var photoname: String
-    var  locationn : Location? =null
+    var  locationn : Location? =ConstantHelper.locationn
 
 //    var jsonData: MeterDataModel? =null
-    private val permission = arrayOf(
-        Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.ACCESS_COARSE_LOCATION,
-
-        )
-    lateinit var locationPermissionLauncher: ActivityResultLauncher<Array<String>>
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
+//    private val permission = arrayOf(
+//        Manifest.permission.ACCESS_FINE_LOCATION,
+//        Manifest.permission.ACCESS_COARSE_LOCATION,
+//
+//        )
+//    lateinit var locationPermissionLauncher: ActivityResultLauncher<Array<String>>
+//    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setHasOptionsMenu(true)
-        locationPermissionLauncher =
-            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-                if (!permissions.containsValue(false)) {
-                    if (ActivityCompat.checkSelfPermission(
-                            requireContext(),
-                            Manifest.permission.ACCESS_FINE_LOCATION
-                        ) == PackageManager.PERMISSION_GRANTED
-                    ) {
-//                        mMap.isMyLocationEnabled = true
-                    }
-                }
-            }
+//        locationPermissionLauncher =
+//            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+//                if (!permissions.containsValue(false)) {
+//                    if (ActivityCompat.checkSelfPermission(
+//                            requireContext(),
+//                            Manifest.permission.ACCESS_FINE_LOCATION
+//                        ) == PackageManager.PERMISSION_GRANTED
+//                    ) {
+////                        mMap.isMyLocationEnabled = true
+//                    }
+//                }
+//            }
     }
 
 
@@ -88,44 +88,44 @@ class CommissioningReport : Fragment() {
         _binding = FragmentCommissioningReportBinding.inflate(
             inflater,container,false)
         val root: View = binding.root
-        requestlocationPermission()
+//        requestlocationPermission()
 
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
-
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-
-
-        }
-        else{
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestlocationPermission()
-            }
-        }
-        Log.e("TAG", "location: ", )
-        LoaderHelper.showLoader(requireContext())
-        val cancellationTokenSource = CancellationTokenSource()
-        fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, cancellationTokenSource.token)
-            .addOnSuccessListener { location ->
-            Log.e("Location", "location is found: $location")
-                locationn=location
-//                findAddress(location)
-                LoaderHelper.dissmissLoader()
-
-        }
-            .addOnFailureListener { exception ->
-                Toast.makeText(requireContext(),"Oops location failed to Fetch: $exception",Toast.LENGTH_SHORT).show()
-                Log.e("Location", "Oops location failed with exception: $exception")
-                LoaderHelper.dissmissLoader()
-            }
-
+//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+//
+//        if (ActivityCompat.checkSelfPermission(
+//                requireContext(),
+//                Manifest.permission.ACCESS_FINE_LOCATION
+//            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+//                requireContext(),
+//                Manifest.permission.ACCESS_COARSE_LOCATION
+//            ) != PackageManager.PERMISSION_GRANTED
+//        ) {
+//
+//
+//        }
+//        else{
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                requestlocationPermission()
+//            }
+//        }
+//        Log.e("TAG", "location: ", )
+//        LoaderHelper.showLoader(requireContext())
+//        val cancellationTokenSource = CancellationTokenSource()
+//        fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, cancellationTokenSource.token)
+//            .addOnSuccessListener { location ->
+//            Log.e("Location", "location is found: $location")
+//                locationn=location
+////                findAddress(location)
+//                LoaderHelper.dissmissLoader()
+//
+//        }
+//            .addOnFailureListener { exception ->
+//                Toast.makeText(requireContext(),"Oops location failed to Fetch: $exception",Toast.LENGTH_SHORT).show()
+//                Log.e("Location", "Oops location failed with exception: $exception")
+//                LoaderHelper.dissmissLoader()
+//            }
+//
 
 
 
@@ -156,17 +156,20 @@ class CommissioningReport : Fragment() {
                 id: Long
             ) {
                 if(binding.spPdfComplete.selectedItemPosition ==2){
-                    binding.tvPdfName.visibility=View.GONE
+                    binding.ivPdfHex.visibility=View.GONE
                     binding.btnPdfFile.visibility=View.GONE
 
                 }else{
-                    binding.tvPdfName.visibility=View.VISIBLE
+                    if(PdfHexingFile!=null){
+                        binding.ivPdfHex.visibility=View.VISIBLE
+                    }
+
                     binding.btnPdfFile.visibility=View.VISIBLE
                 }
             }
 
             override fun onNothingSelected(parentView: AdapterView<*>?) {
-                binding.tvPdfName.visibility=View.GONE
+                binding.ivPdfHex.visibility=View.GONE
                 binding.btnPdfFile.visibility=View.GONE
             }
         })
@@ -306,9 +309,14 @@ class CommissioningReport : Fragment() {
             }
             else{
                  addInModel()
-                Navigation.findNavController(root).navigate(
-                    R.id.action_nav_commissioningReport_to_nav_updateSiteDetails,
-                )
+                try {
+                    Navigation.findNavController(root).navigate(
+                        R.id.action_nav_commissioningReport_to_nav_updateSiteDetails,
+                    )
+                }catch (e:Exception){
+
+                }
+
              }
 
 
@@ -340,8 +348,8 @@ class CommissioningReport : Fragment() {
 
 
          HexingPDFFile.put("Key",binding.spPdfComplete.selectedItem)
-         var pdfBase64file=ConstantHelper.fileToBase64(PdfHexingFile!!)
-         HexingPDFFile.put("Value",pdfBase64file)
+//         var pdfBase64file=ConstantHelper.fileToBase64(PdfHexingFile!!)
+         HexingPDFFile.put("Value",ConstantHelper.PhotopdfhexUUID)
          Commissioning.put("HexingPDFFile",HexingPDFFile)
 
 
@@ -356,7 +364,7 @@ class CommissioningReport : Fragment() {
          Commissioning.put("GPRSSignalStrength",GPRSSignalStrength)
 
          OntecTechnicalConfirmation.put("Key",binding.etNameOntecTech.text)
-         OntecTechnicalConfirmation.put("Value",ConstantHelper.PhotoSmsConfigFileUUID)
+         OntecTechnicalConfirmation.put("Value",ConstantHelper.PhotoGprsSignalFileUUID)
          Commissioning.put("OntecTechnicalConfirmation",OntecTechnicalConfirmation)
 
          Commissioning.put("LocationDescription",binding.etDescMeterLocation.text.toString())
@@ -407,32 +415,32 @@ class CommissioningReport : Fragment() {
     }
 
 
-    private fun requestlocationPermission() {
-
-        when {
-            hasPermissions(requireContext(), *permission) -> {
-                if (ActivityCompat.checkSelfPermission(
-                        requireContext(),
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                    ) == PackageManager.PERMISSION_GRANTED
-                ) {
-
-                }
-            }
-            else -> {
-                Toast.makeText(requireContext(), " Allow the  Permission", Toast.LENGTH_LONG).show()
-                locationPermission()
-            }
-        }
-
-    }
-    private fun hasPermissions(context: Context, vararg permissions: String): Boolean =
-        permissions.all {
-            ActivityCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
-        }
-    private fun locationPermission() {
-        locationPermissionLauncher.launch(permission)
-    }
+//    private fun requestlocationPermission() {
+//
+//        when {
+//            hasPermissions(requireContext(), *permission) -> {
+//                if (ActivityCompat.checkSelfPermission(
+//                        requireContext(),
+//                        Manifest.permission.ACCESS_FINE_LOCATION
+//                    ) == PackageManager.PERMISSION_GRANTED
+//                ) {
+//
+//                }
+//            }
+//            else -> {
+//                Toast.makeText(requireContext(), " Allow the  Permission", Toast.LENGTH_LONG).show()
+//                locationPermission()
+//            }
+//        }
+//
+//    }
+//    private fun hasPermissions(context: Context, vararg permissions: String): Boolean =
+//        permissions.all {
+//            ActivityCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
+//        }
+//    private fun locationPermission() {
+//        locationPermissionLauncher.launch(permission)
+//    }
 
 //
 //    fun findAddress(location: Location):String
@@ -471,7 +479,7 @@ class CommissioningReport : Fragment() {
 
     fun loadGprsSignalImage(){
         PhotoGprsSignalFile = File(mPhotoFile?.path!!)
-//        addPhoto(4)
+       addPhoto(2)
         Log.e("TAG", "Load Gprs Signal File: $PhotoGprsSignalFile")
         Glide.with(requireContext())
             .load(PhotoGprsSignalFile)
@@ -485,18 +493,18 @@ class CommissioningReport : Fragment() {
 
 
 
-    fun loadPdfFile(){
-        PdfHexingFile = File(mPhotoFile?.path!!)
-//        addPhoto(4)
-        Log.e("TAG", "Load SMS Photo File: $PhotoSmsConfigFile")
+//    fun loadPdfFile(){
+//        PdfHexingFile = File(mPhotoFile?.path!!)
+////        addPhoto(4)
+//        Log.e("TAG", "Load SMS Photo File: $PhotoSmsConfigFile")
+//
+//        binding.tvPdfName.text= "File Name:--   "+PdfHexingFile?.path.toString()
+//        showPdfFile()
+//    }
 
-        binding.tvPdfName.text= "File Name:--   "+PdfHexingFile?.path.toString()
-        showPdfFile()
-    }
-
-    fun showPdfFile() {
-        binding.tvPdfName.visibility = View.VISIBLE
-    }
+//    fun showPdfFile() {
+//        binding.tvPdfName.visibility = View.VISIBLE
+//    }
 
 
 
@@ -509,6 +517,20 @@ class CommissioningReport : Fragment() {
             .load(PhotoSmsConfigFile)
             .into(binding.ivConfigSms)
         showVoltageImg()
+    }
+
+    fun loadpdfImages(){
+        PdfHexingFile = File(mPhotoFile?.path!!)
+        addPhoto(3)
+        Log.e("TAG", "Load SMS Photo File: $PdfHexingFile")
+        Glide.with(requireContext())
+            .load(PdfHexingFile)
+            .into(binding.ivPdfHex)
+        showpdfhex()
+    }
+
+    fun showpdfhex(){
+        binding.ivPdfHex.visibility=View.VISIBLE
     }
 
      fun showVoltageImg() {
@@ -550,13 +572,16 @@ class CommissioningReport : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putString("imagePath", mPhotoFile.toString())
+        outState.putString("photoname",photoname)
         Log.e("TAG", "onSaveInstanceState: ")
         super.onSaveInstanceState(outState)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         setImageFile(savedInstanceState?.get("imagePath").toString())
+        setPhotonamee(savedInstanceState?.get("photoname").toString())
         Log.e("TAG", "onRestoreInstanceState: " + savedInstanceState?.get("imagePath"))
+        Log.e("TAG", "onRestoreInstanceState photoname: " + savedInstanceState?.get("photoname"))
         super.onViewStateRestored(savedInstanceState)
     }
 
@@ -567,6 +592,9 @@ class CommissioningReport : Fragment() {
 
     fun setImageFile(path: String) {
         mPhotoFile = File(path)
+    }
+    fun setPhotonamee(name: String) {
+        photoname = name
     }
 
 
@@ -594,7 +622,8 @@ class CommissioningReport : Fragment() {
                     Log.e("TAG", "selectImageType: Camera")
                     dispatchTakePictureIntent()
                 } else if(photoname==ConstantHelper.PDF_COMPLETE){
-                    dispatchDocumetIntent()
+                    dispatchGalleryIntent()
+//                    dispatchDocumetIntent()
                 }
 
 
@@ -639,7 +668,13 @@ class CommissioningReport : Fragment() {
                 }
 
                 Log.e("Photo2", mPhotoFile.toString())
-                loadSmsConfigImages()
+
+                if(photoname!=ConstantHelper.PDF_COMPLETE){
+                    loadSmsConfigImages()
+                }else{
+                    loadpdfImages()
+                }
+
 
             }
 
@@ -686,51 +721,51 @@ class CommissioningReport : Fragment() {
     }
 
 
-    private var activityResultLauncherDocumet: ActivityResultLauncher<Intent> =
+//    private var activityResultLauncherDocumet: ActivityResultLauncher<Intent> =
+//
+//        registerForActivityResult(
+//            ActivityResultContracts.StartActivityForResult()
+//        ) { result: ActivityResult ->
+//            if (result.resultCode == Activity.RESULT_OK) {
+//                var result = result.data
+//                var selectedDocument: Uri = result?.data!!
+//                mPhotoFile = File(getRealPathFromUri(selectedDocument))
+//
+//                val sourcePath = requireContext().getExternalFilesDir(null).toString()
+//                Log.e("Photo2", mPhotoFile.toString())
+//
+//                try {
+//                    copyFileStream(
+//                        File(sourcePath + "/" + mPhotoFile!!.name),
+//                        selectedDocument,
+//                        requireContext()
+//                    )
+//                }catch (e:Exception){
+//
+//                }
+//
+//                Log.e("Photo2", mPhotoFile.toString())
+//                loadPdfFile()
+//
+//            }
+//
+//
+//        }
 
-        registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) { result: ActivityResult ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                var result = result.data
-                var selectedDocument: Uri = result?.data!!
-                mPhotoFile = File(getRealPathFromUri(selectedDocument))
-
-                val sourcePath = requireContext().getExternalFilesDir(null).toString()
-                Log.e("Photo2", mPhotoFile.toString())
-
-                try {
-                    copyFileStream(
-                        File(sourcePath + "/" + mPhotoFile!!.name),
-                        selectedDocument,
-                        requireContext()
-                    )
-                }catch (e:Exception){
-
-                }
-
-                Log.e("Photo2", mPhotoFile.toString())
-                loadPdfFile()
-
-            }
-
-
-        }
-
-    private fun dispatchDocumetIntent() {
-
-        val pickDocument = Intent(
-            Intent.ACTION_OPEN_DOCUMENT_TREE
-        )
-        pickDocument .setAction(Intent.ACTION_GET_CONTENT)
-        pickDocument .addCategory(Intent.CATEGORY_OPENABLE)
-        pickDocument .type="application/pdf"
-        activityResultLauncherDocumet.launch(pickDocument )
-//        startActivityForResult(
-//            pickPhoto,
-//            REQUEST_GALLERY_PHOTO
+//    private fun dispatchDocumetIntent() {
+//
+//        val pickDocument = Intent(
+//            Intent.ACTION_OPEN_DOCUMENT_TREE
 //        )
-    }
+//        pickDocument .setAction(Intent.ACTION_GET_CONTENT)
+//        pickDocument .addCategory(Intent.CATEGORY_OPENABLE)
+//        pickDocument .type="application/pdf"
+//        activityResultLauncherDocumet.launch(pickDocument )
+////        startActivityForResult(
+////            pickPhoto,
+////            REQUEST_GALLERY_PHOTO
+////        )
+//    }
 
 
     private fun dispatchTakePictureIntent() {
@@ -811,6 +846,8 @@ class CommissioningReport : Fragment() {
             base64Image = ConstantHelper.getBase64(PhotoSmsConfigFile!!)
         }else if(type==2){
             base64Image = ConstantHelper.getBase64(PhotoGprsSignalFile!!)
+        }else if(type==3){
+            base64Image = ConstantHelper.getBase64(PdfHexingFile!!)
         }
 
 
@@ -842,6 +879,9 @@ class CommissioningReport : Fragment() {
 
         }else if(type==2){
             ConstantHelper.PhotoGprsSignalFileUUID=newUUID.toString()
+
+        }else if(type==3){
+            ConstantHelper.PhotopdfhexUUID=newUUID.toString()
 
         }
 

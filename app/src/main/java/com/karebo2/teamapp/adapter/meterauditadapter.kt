@@ -1,19 +1,24 @@
 package com.karebo2.teamapp.adapter
 
+import android.R.attr.label
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.location.Address
 import android.location.Geocoder
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.karebo2.teamapp.R
 import com.karebo2.teamapp.dataclass.meterData.meterauditDataModel
+import com.karebo2.teamapp.sharedpreference.SharedPreferenceHelper
 import com.karebo2.teamapp.utils.ConstantHelper
+import com.karebo2.teamapp.utils.GsonParser
 import java.util.*
 
 
@@ -36,6 +41,11 @@ class meterauditadapter(private val mList: List<meterauditDataModel>,
 //                GsonParser.gsonParser!!.toJson(mList[viewHolder.adapterPosition])
 //            bundle.putString("data", JsonString)
 
+            val clipboard: ClipboardManager? =
+               mCtx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
+            val clip = ClipData.newPlainText("label", mList[viewHolder.adapterPosition].jobCardId.toString())
+            clipboard?.setPrimaryClip(clip)
+
             if(mList[viewHolder.adapterPosition].parcelAddress==null){
 
                     var address=findAddress(mList[viewHolder.adapterPosition])
@@ -47,23 +57,40 @@ class meterauditadapter(private val mList: List<meterauditDataModel>,
 
 
 
-            ConstantHelper.currentSelectd=mList[viewHolder.adapterPosition]
+         //   ConstantHelper.currentSelectd=mList[viewHolder.adapterPosition]
+
+            val JsonString: String =
+                GsonParser.gsonParser!!.toJson(mList[viewHolder.adapterPosition])
+            SharedPreferenceHelper.getInstance(mCtx).setCurrentSelected(JsonString)
 
             if(mList[viewHolder.adapterPosition].subJobCards==null || mList[viewHolder.adapterPosition].subJobCards!!.isEmpty() ){
 
 
-                Navigation.findNavController(view2).navigate(
+                try {
+                    Navigation.findNavController(view2).navigate(
 //                R.id.action_nav_meteraudit_to_nav_auditphoto
-                    R.id.action_nav_meteraudit_to_nav_accessstatus
-                )
+                        R.id.action_nav_meteraudit_to_nav_accessstatus
+                    )
+                }catch (e:Exception){
+
+                }
+
+
             }else{
 
                 ConstantHelper.subMeterlist= mList[viewHolder.adapterPosition].subJobCards!!
 
-                Navigation.findNavController(view2).navigate(
+
+                try {
+                    Navigation.findNavController(view2).navigate(
 //                R.id.action_nav_meteraudit_to_nav_auditphoto
-                    R.id.action_nav_meteraudit_to_nav_subMeter
-                )
+                        R.id.action_nav_meteraudit_to_nav_subMeter
+                    )
+                }catch (e:Exception){
+
+                }
+
+
             }
 
 

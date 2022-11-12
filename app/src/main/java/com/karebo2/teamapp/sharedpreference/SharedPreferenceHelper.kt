@@ -153,6 +153,28 @@ class SharedPreferenceHelper(ctx: Context) {
 
 
 
+    fun setCurrentSelected(jobcard: String) {
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences(
+            ConstantHelper.SHARED_PREFERENCE_ID,
+            Context.MODE_PRIVATE
+        )
+        val editor = sharedPreferences.edit()
+        editor.putString("jobcard", jobcard)
+        editor.apply()
+    }
+
+    fun getCurrentSelected(): String {
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences(
+            ConstantHelper.SHARED_PREFERENCE_ID,
+            Context.MODE_PRIVATE
+        )
+        val jobcard = sharedPreferences.getString("jobcard", null)
+        return jobcard.toString()
+
+    }
+
+
+
 
 
     fun clearPreferences() {

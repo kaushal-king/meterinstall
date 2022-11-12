@@ -37,10 +37,13 @@ import com.google.android.gms.tasks.CancellationTokenSource
 
 
 import com.karebo2.teamapp.databinding.FragmentSiteStartBinding
+import com.karebo2.teamapp.dataclass.CodeListDataClass
+import com.karebo2.teamapp.dataclass.meterData.meterauditDataModel
 import com.karebo2.teamapp.dataclass.photoUploadDataClass
 import com.karebo2.teamapp.utils.LoaderHelper
 import com.karebo2.teamapp.sharedpreference.SharedPreferenceHelper
 import com.karebo2.teamapp.utils.ConstantHelper
+import com.karebo2.teamapp.utils.GsonParser
 import org.json.JSONObject
 import java.io.*
 import java.text.SimpleDateFormat
@@ -64,38 +67,38 @@ class SiteStart : Fragment() {
     var timePickerDialog: TimePickerDialog? = null
     var slectTimeField:String=""
     var calendar = Calendar.getInstance()
-    var  locationn : Location? =null
+    var  locationn : Location? =ConstantHelper.locationn
 
-    private val permission = arrayOf(
-        Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.ACCESS_COARSE_LOCATION,
+//    private val permission = arrayOf(
+//        Manifest.permission.ACCESS_FINE_LOCATION,
+//        Manifest.permission.ACCESS_COARSE_LOCATION,
+//
+//        )
+//    lateinit var locationPermissionLauncher: ActivityResultLauncher<Array<String>>
+//    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-        )
-    lateinit var locationPermissionLauncher: ActivityResultLauncher<Array<String>>
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    var currentSelected: meterauditDataModel?=null
+    private var photoname: String=""
 
 
-    lateinit var photoname: String
-
-    var spinnerManufacture: ArrayAdapter<String>? = null
-    var SpinnerModel: ArrayAdapter<String>? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        locationPermissionLauncher =
-            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-                if (!permissions.containsValue(false)) {
-                    if (ActivityCompat.checkSelfPermission(
-                            requireContext(),
-                            Manifest.permission.ACCESS_FINE_LOCATION
-                        ) == PackageManager.PERMISSION_GRANTED
-                    ) {
-//                        mMap.isMyLocationEnabled = true
-                    }
-                }
-            }
+//        locationPermissionLauncher =
+//            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+//                if (!permissions.containsValue(false)) {
+//                    if (ActivityCompat.checkSelfPermission(
+//                            requireContext(),
+//                            Manifest.permission.ACCESS_FINE_LOCATION
+//                        ) == PackageManager.PERMISSION_GRANTED
+//                    ) {
+////                        mMap.isMyLocationEnabled = true
+//                    }
+//                }
+//            }
+//
     }
 
 
@@ -111,42 +114,58 @@ class SiteStart : Fragment() {
         val root: View = binding.root
         hideEveryThing()
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
-
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
+        var data=  SharedPreferenceHelper.getInstance(requireContext()).getCurrentSelected()
+        currentSelected = GsonParser.gsonParser!!.fromJson(data, meterauditDataModel::class.java)
 
 
-        }
-        else{
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestlocationPermission()
-            }
-        }
-        Log.e("TAG", "location: ")
+//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+//
+//        if (ActivityCompat.checkSelfPermission(
+//                requireContext(),
+//                Manifest.permission.ACCESS_FINE_LOCATION
+//            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+//                requireContext(),
+//                Manifest.permission.ACCESS_COARSE_LOCATION
+//            ) != PackageManager.PERMISSION_GRANTED
+//        ) {
+//
+//
+//        }
+//        else{
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                requestlocationPermission()
+//            }
+//        }
+//        Log.e("TAG", "location: ")
+//
+//        LoaderHelper.showLoader(requireContext())
+//
+//        val cancellationTokenSource = CancellationTokenSource()
+//        fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, cancellationTokenSource.token)
+//            .addOnSuccessListener { location ->
+//                Log.e("Location", "location is found: $location")
+//                locationn=location
+//                LoaderHelper.dissmissLoader()
+//
+//            }
+//            .addOnFailureListener { exception ->
+//                Toast.makeText(requireContext(),"Oops location failed to Fetch: $exception",Toast.LENGTH_SHORT).show()
+//                Log.e("Location", "Oops location failed with exception: $exception")
+//                LoaderHelper.dissmissLoader()
+//            }
+//
 
-        LoaderHelper.showLoader(requireContext())
 
-        val cancellationTokenSource = CancellationTokenSource()
-        fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, cancellationTokenSource.token)
-            .addOnSuccessListener { location ->
-                Log.e("Location", "location is found: $location")
-                locationn=location
-                LoaderHelper.dissmissLoader()
 
-            }
-            .addOnFailureListener { exception ->
-                Toast.makeText(requireContext(),"Oops location failed to Fetch: $exception",Toast.LENGTH_SHORT).show()
-                Log.e("Location", "Oops location failed with exception: $exception")
-                LoaderHelper.dissmissLoader()
-            }
 
+        binding.etSiteAddress.setText(ConstantHelper.ADDRESS)
+        binding.etGpsLocation.setText(currentSelected!!.latitude.toString()+" "+currentSelected!!.longitude)
+        binding.etSiteName.setText(currentSelected!!.dictionary!!.Site_Name)
+        binding.etSiteManagerName.setText(currentSelected!!.dictionary!!.Contact_Manager_Name)
+        binding.etSiteManagerContact.setText(currentSelected!!.dictionary!!.Contact_Manager_Contact_Number)
+        binding.etSiteManagerEmail.setText(currentSelected!!.dictionary!!.Contact_Manager_Email)
+        binding.etRefNo.setText(currentSelected!!.dictionary!!.Reference_Number)
+        binding.etRefExpire.setText(currentSelected!!.dictionary!!.Reference_Expiry)
 
 
 
@@ -160,6 +179,7 @@ class SiteStart : Fragment() {
 //        setApiData()
 
 //        binding.etMeterSerialNo.setText(ConstantHelper.SERIAL)
+
 
 
         binding.etArriveOnSite.setOnClickListener {
@@ -185,6 +205,7 @@ class SiteStart : Fragment() {
             if(binding.etGpsLocation.text.isEmpty()|| binding.etGpsLocation.equals(null)){
                 Toast.makeText(requireContext(),"Enter "+binding.etGpsLocation.hint.toString(),Toast.LENGTH_SHORT).show()
             }
+
             else if(binding.etSiteName.text.isEmpty()|| binding.etSiteName.equals(null)){
                 Toast.makeText(requireContext(),"Enter "+binding.etSiteName.hint.toString(),Toast.LENGTH_SHORT).show()
             }
@@ -242,37 +263,37 @@ class SiteStart : Fragment() {
 
         binding.btImageCurrentConnection.setOnClickListener {
             photoname = ConstantHelper.CURRENT_CONNECTION
-            selectImageType(requireContext())
+            selectImageType(requireActivity())
         }
 
         binding.btImageVoltageConnection.setOnClickListener {
             photoname = ConstantHelper.VOLTAGE_CONNECTION
-            selectImageType(requireContext())
+            selectImageType(requireActivity())
         }
 
         binding.btnBeforeInstall1.setOnClickListener {
             photoname = ConstantHelper.BEFORE_INSTALL1
-            selectImageType(requireContext())
+            selectImageType(requireActivity())
         }
 
         binding.btnBeforeInstall2.setOnClickListener {
             photoname = ConstantHelper.BEFORE_INSTALL2
-            selectImageType(requireContext())
+            selectImageType(requireActivity())
         }
 
         binding.btnBeforeInstall3.setOnClickListener {
             photoname = ConstantHelper.BEFORE_INSTALL3
-            selectImageType(requireContext())
+            selectImageType(requireActivity())
         }
 
         binding.btnBeforeInstall4.setOnClickListener {
             photoname = ConstantHelper.BEFORE_INSTALL4
-            selectImageType(requireContext())
+            selectImageType(requireActivity())
         }
 
         binding.btnBeforeInstall5.setOnClickListener {
             photoname = ConstantHelper.BEFORE_INSTALL5
-            selectImageType(requireContext())
+            selectImageType(requireActivity())
         }
 
 //        binding.btTokenImgSs.setOnClickListener {
@@ -460,32 +481,32 @@ class SiteStart : Fragment() {
      }
 
 
-    private fun requestlocationPermission() {
-
-        when {
-            hasPermissions2(requireContext(), *permission) -> {
-                if (ActivityCompat.checkSelfPermission(
-                        requireContext(),
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                    ) == PackageManager.PERMISSION_GRANTED
-                ) {
-
-                }
-            }
-            else -> {
-                Toast.makeText(requireContext(), " Allow the  Permission", Toast.LENGTH_LONG).show()
-                locationPermission()
-            }
-        }
-
-    }
-    private fun hasPermissions2(context: Context, vararg permissions: String): Boolean =
-        permissions.all {
-            ActivityCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
-        }
-    private fun locationPermission() {
-        locationPermissionLauncher.launch(permission)
-    }
+//    private fun requestlocationPermission() {
+//
+//        when {
+//            hasPermissions2(requireContext(), *permission) -> {
+//                if (ActivityCompat.checkSelfPermission(
+//                        requireContext(),
+//                        Manifest.permission.ACCESS_FINE_LOCATION
+//                    ) == PackageManager.PERMISSION_GRANTED
+//                ) {
+//
+//                }
+//            }
+//            else -> {
+//                Toast.makeText(requireContext(), " Allow the  Permission", Toast.LENGTH_LONG).show()
+//                locationPermission()
+//            }
+//        }
+//
+//    }
+//    private fun hasPermissions2(context: Context, vararg permissions: String): Boolean =
+//        permissions.all {
+//            ActivityCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
+//        }
+//    private fun locationPermission() {
+//        locationPermissionLauncher.launch(permission)
+//    }
 
 
 
@@ -502,17 +523,19 @@ class SiteStart : Fragment() {
            var Signatures = JSONObject()
 
 
-        if(ConstantHelper.currentSelectd.subJobCards==null ||ConstantHelper.currentSelectd.subJobCards!!.isEmpty()) {
+
+
+        if(currentSelected!!.subJobCards==null ||currentSelected!!.subJobCards!!.isEmpty()) {
             ConstantHelper.TEST0123456.put("Code", "")
             ConstantHelper.TEST0123456.put("Latitude", locationn!!.latitude)
             ConstantHelper.TEST0123456.put("Longitude", locationn!!.longitude)
-            ConstantHelper.TEST0123456.put("Serial", ConstantHelper.currentSelectd.project)
-            ConstantHelper.TEST0123456.put("Id", ConstantHelper.currentSelectd.jobCardId)
+            ConstantHelper.TEST0123456.put("Serial","")
+            ConstantHelper.TEST0123456.put("Id", currentSelected!!.jobCardId)
         }else{
             ConstantHelper.TEST0123456.put("Code", "")
             ConstantHelper.TEST0123456.put("Latitude", locationn!!.latitude)
             ConstantHelper.TEST0123456.put("Longitude", locationn!!.longitude)
-            ConstantHelper.TEST0123456.put("Serial", ConstantHelper.currentSelectdSubMeter.task!!.project)
+            ConstantHelper.TEST0123456.put("Serial", "")
             ConstantHelper.TEST0123456.put("Id", ConstantHelper.currentSelectdSubMeter.task!!.jobCardId)
         }
 
@@ -713,13 +736,16 @@ class SiteStart : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putString("imagePath", mPhotoFile.toString())
+        outState.putString("photoname",photoname)
         Log.e("TAG", "onSaveInstanceState: ")
         super.onSaveInstanceState(outState)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         setImageFile(savedInstanceState?.get("imagePath").toString())
+        setPhotoname(savedInstanceState?.get("photoname").toString())
         Log.e("TAG", "onRestoreInstanceState: " + savedInstanceState?.get("imagePath"))
+        Log.e("TAG", "onRestoreInstanceState photoname: " + savedInstanceState?.get("photoname"))
         super.onViewStateRestored(savedInstanceState)
     }
 
@@ -730,6 +756,10 @@ class SiteStart : Fragment() {
 
     fun setImageFile(path: String) {
         mPhotoFile = File(path)
+    }
+
+    fun setPhotoname(name: String) {
+        photoname = name
     }
 
 
@@ -1242,6 +1272,11 @@ class SiteStart : Fragment() {
 
 
     }
+
+
+
+
+
 
 
 

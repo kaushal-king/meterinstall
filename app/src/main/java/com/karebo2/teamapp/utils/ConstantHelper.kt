@@ -2,6 +2,7 @@ package com.karebo2.teamapp.utils
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.location.Location
 import android.util.Base64
 import com.karebo2.teamapp.dataclass.meterData.SubJobCard
 import com.karebo2.teamapp.dataclass.meterData.meterauditDataModel
@@ -46,7 +47,7 @@ object ConstantHelper {
     var JOB_TYPE=""
 
     var PropertyPictureUUID=""
-
+    var  locationn : Location? =null
 
 
     var voltagepointUUID=""
@@ -68,14 +69,16 @@ object ConstantHelper {
 
     var PhotoSmsConfigFileUUID=""
     var PhotoGprsSignalFileUUID=""
+    var PhotopdfhexUUID=""
 
-    lateinit var currentSelectd: meterauditDataModel
+//    lateinit var currentSelectd: meterauditDataModel
     lateinit var currentSelectdSubMeter: SubJobCard
 
 
     var submitJobCardDataJSON = JSONObject()
     var Meters = JSONObject()
     var TEST0123456 = JSONObject()
+
 
 
     var Components = JSONObject()

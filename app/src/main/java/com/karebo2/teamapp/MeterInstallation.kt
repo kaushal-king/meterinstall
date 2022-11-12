@@ -13,6 +13,8 @@ import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
 import android.view.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -27,9 +29,11 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.karebo2.teamapp.databinding.FragmentMeterInstallationBinding
+import com.karebo2.teamapp.dataclass.CodeListDataClass
 import com.karebo2.teamapp.utils.LoaderHelper
 import com.karebo2.teamapp.sharedpreference.SharedPreferenceHelper
 import com.karebo2.teamapp.utils.ConstantHelper
+import com.karebo2.teamapp.utils.GsonParser
 import org.json.JSONObject
 import java.io.File
 import java.io.IOException
@@ -44,33 +48,36 @@ class MeterInstallation : Fragment() {
     private var mPhotoFile: File? = null
     private var PhotoSimCardFile: File? = null
 
+    var spinnerManufacture: ArrayAdapter<String>? = null
+    var SpinnerModel: ArrayAdapter<String>? = null
 
-    var  locationn : Location? =null
+    var  locationn : Location? =ConstantHelper.locationn
     lateinit var photoname: String
 
-    private val permission = arrayOf(
-        Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.ACCESS_COARSE_LOCATION,
-
-        )
-    lateinit var locationPermissionLauncher: ActivityResultLauncher<Array<String>>
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
+//    private val permission = arrayOf(
+//        Manifest.permission.ACCESS_FINE_LOCATION,
+//        Manifest.permission.ACCESS_COARSE_LOCATION,
+//
+//        )
+//    lateinit var locationPermissionLauncher: ActivityResultLauncher<Array<String>>
+//    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        locationPermissionLauncher =
-            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-                if (!permissions.containsValue(false)) {
-                    if (ActivityCompat.checkSelfPermission(
-                            requireContext(),
-                            Manifest.permission.ACCESS_FINE_LOCATION
-                        ) == PackageManager.PERMISSION_GRANTED
-                    ) {
-//                        mMap.isMyLocationEnabled = true
-                    }
-                }
-            }
+//        locationPermissionLauncher =
+//            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+//                if (!permissions.containsValue(false)) {
+//                    if (ActivityCompat.checkSelfPermission(
+//                            requireContext(),
+//                            Manifest.permission.ACCESS_FINE_LOCATION
+//                        ) == PackageManager.PERMISSION_GRANTED
+//                    ) {
+////                        mMap.isMyLocationEnabled = true
+//                    }
+//                }
+//            }
+//
     }
 
 
@@ -89,40 +96,41 @@ class MeterInstallation : Fragment() {
             hideSimSwap()
         }
 
+        loadManufecture()
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
-
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-
-
-        }
-        else{
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestlocationPermission()
-            }
-        }
-        Log.e("TAG", "location: ")
-        LoaderHelper.showLoader(requireContext())
-        val cancellationTokenSource = CancellationTokenSource()
-        fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, cancellationTokenSource.token)
-            .addOnSuccessListener { location ->
-                Log.e("Location", "location is found: $location")
-                locationn=location
-                LoaderHelper.dissmissLoader()
-
-            }
-            .addOnFailureListener { exception ->
-                Toast.makeText(requireContext(),"Oops location failed to Fetch: $exception",Toast.LENGTH_SHORT).show()
-                Log.e("Location", "Oops location failed with exception: $exception")
-                LoaderHelper.dissmissLoader()
-            }
+//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+//
+//        if (ActivityCompat.checkSelfPermission(
+//                requireContext(),
+//                Manifest.permission.ACCESS_FINE_LOCATION
+//            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+//                requireContext(),
+//                Manifest.permission.ACCESS_COARSE_LOCATION
+//            ) != PackageManager.PERMISSION_GRANTED
+//        ) {
+//
+//
+//        }
+//        else{
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                requestlocationPermission()
+//            }
+//        }
+//        Log.e("TAG", "location: ")
+//        LoaderHelper.showLoader(requireContext())
+//        val cancellationTokenSource = CancellationTokenSource()
+//        fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, cancellationTokenSource.token)
+//            .addOnSuccessListener { location ->
+//                Log.e("Location", "location is found: $location")
+//                locationn=location
+//                LoaderHelper.dissmissLoader()
+//
+//            }
+//            .addOnFailureListener { exception ->
+//                Toast.makeText(requireContext(),"Oops location failed to Fetch: $exception",Toast.LENGTH_SHORT).show()
+//                Log.e("Location", "Oops location failed with exception: $exception")
+//                LoaderHelper.dissmissLoader()
+//            }
 
 
 //
@@ -131,26 +139,47 @@ class MeterInstallation : Fragment() {
             selectImageType(requireContext())
         }
 
+        binding.spMeterManufacturer.setOnItemSelectedListener(object :
+            AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parentView: AdapterView<*>?,
+                selectedItemView: View?,
+                position: Int,
+                id: Long
+            ) {
+                loadModel()
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>?) {
+                // your code here
+            }
+        })
+
+
 
 
         binding.btNext.setOnClickListener{
             if(ConstantHelper.JOB_TYPE=="2"){
                 if(binding.etModemSerialNumber.text.isEmpty()|| binding.etModemSerialNumber.equals(null)){
-                    Toast.makeText(requireContext(),"Enter "+binding.etModemSerialNumber.hint.toString(),Toast.LENGTH_SHORT).show()
-                }else if(binding.etModemManufacturer.text.isEmpty()|| binding.etModemManufacturer.equals(null)){
-                    Toast.makeText(requireContext(),"Enter "+binding.etModemManufacturer.hint.toString(),Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),"Enter Modem serial number",Toast.LENGTH_SHORT).show()
+                }
+                else if(binding.etSerialNumber.text.isEmpty()|| binding.etSerialNumber.equals(null)){
+                    Toast.makeText(requireContext(),"Enter serial number",Toast.LENGTH_SHORT).show()
+                }
+                else if(binding.etModemManufacturer.text.isEmpty()|| binding.etModemManufacturer.equals(null)){
+                    Toast.makeText(requireContext(),"Enter Modem Manufacturer",Toast.LENGTH_SHORT).show()
                 }else if(binding.etModemType.text.isEmpty()|| binding.etModemType.equals(null)){
-                    Toast.makeText(requireContext(),"Enter "+binding.etModemType.hint.toString(),Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),"Enter Modem Type",Toast.LENGTH_SHORT).show()
                 }else if(binding.etModemConfigure.text.isEmpty()|| binding.etModemConfigure.equals(null)){
-                    Toast.makeText(requireContext(),"Enter "+binding.etModemConfigure.hint.toString(),Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),"Enter Modem configured successfully",Toast.LENGTH_SHORT).show()
                 }else if(binding.etNewSimNo.text.isEmpty()|| binding.etNewSimNo.equals(null)){
-                    Toast.makeText(requireContext(),"Enter "+binding.etNewSimNo.hint.toString(),Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),"Enter New Sim Card Number No",Toast.LENGTH_SHORT).show()
                 }else if(binding.etSimMsisdn.text.isEmpty()|| binding.etSimMsisdn.equals(null)){
-                    Toast.makeText(requireContext(),"Enter "+binding.etSimMsisdn.hint.toString(),Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),"Enter SIM MSISDN",Toast.LENGTH_SHORT).show()
                 }else if(binding.etIpPort.text.isEmpty()|| binding.etIpPort.equals(null)){
-                    Toast.makeText(requireContext(),"Enter "+binding.etIpPort.hint.toString(),Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),"Enter IP Port",Toast.LENGTH_SHORT).show()
                 }else if(binding.etTcpPort.text.isEmpty()|| binding.etTcpPort.equals(null)){
-                    Toast.makeText(requireContext(),"Enter "+binding.etTcpPort.hint.toString(),Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),"Enter TCP Port",Toast.LENGTH_SHORT).show()
                 }
                 else if(PhotoSimCardFile==null){
                     Toast.makeText(requireContext(),"select simcard photo",Toast.LENGTH_SHORT).show()
@@ -180,37 +209,42 @@ class MeterInstallation : Fragment() {
         return root
     }
 
-    private fun requestlocationPermission() {
-
-        when {
-            hasPermissions2(requireContext(), *permission) -> {
-                if (ActivityCompat.checkSelfPermission(
-                        requireContext(),
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                    ) == PackageManager.PERMISSION_GRANTED
-                ) {
-
-                }
-            }
-            else -> {
-                Toast.makeText(requireContext(), " Allow the  Permission", Toast.LENGTH_LONG).show()
-                locationPermission()
-            }
-        }
-
-    }
-    private fun hasPermissions2(context: Context, vararg permissions: String): Boolean =
-        permissions.all {
-            ActivityCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
-        }
-    private fun locationPermission() {
-        locationPermissionLauncher.launch(permission)
-    }
+//    private fun requestlocationPermission() {
+//
+//        when {
+//            hasPermissions2(requireContext(), *permission) -> {
+//                if (ActivityCompat.checkSelfPermission(
+//                        requireContext(),
+//                        Manifest.permission.ACCESS_FINE_LOCATION
+//                    ) == PackageManager.PERMISSION_GRANTED
+//                ) {
+//
+//                }
+//            }
+//            else -> {
+//                Toast.makeText(requireContext(), " Allow the  Permission", Toast.LENGTH_LONG).show()
+//                locationPermission()
+//            }
+//        }
+//
+//    }
+//    private fun hasPermissions2(context: Context, vararg permissions: String): Boolean =
+//        permissions.all {
+//            ActivityCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
+//        }
+//    private fun locationPermission() {
+//        locationPermissionLauncher.launch(permission)
+//    }
 
      fun addInModel() {
          var InstallationDetails = JSONObject()
          var Modem = JSONObject()
+         var code=findMeterCode()
 //         var TamperPictures = JSONArray()
+         ConstantHelper.SERIAL=binding.etSerialNumber.text.toString()
+
+         ConstantHelper.TEST0123456.put("Code", code)
+         ConstantHelper.TEST0123456.put("Serial",binding.etSerialNumber.text.toString())
 
          InstallationDetails.put("Voltage",binding.spSupplyVoltage.selectedItem.toString())
          InstallationDetails.put("PhaseCount",binding.spPhase.selectedItem.toString())
@@ -219,7 +253,13 @@ class MeterInstallation : Fragment() {
          InstallationDetails.put("CTRatioOnMeter",binding.spCtRatioMeter.selectedItem.toString())
          InstallationDetails.put("CTRatioAtSite",binding.spCtRatioSite.selectedItem.toString())
          InstallationDetails.put("VTRatio",binding.spVtRatio.selectedItem.toString())
-         InstallationDetails.put("NewCircuitBreaker",binding.spCircuitBreakerConnected.selectedItem.toString())
+
+         if(binding.spCircuitBreakerConnected.selectedItem.toString()=="yes"){
+             InstallationDetails.put("NewCircuitBreaker",true)
+         }else{
+             InstallationDetails.put("NewCircuitBreaker",false)
+         }
+
          InstallationDetails.put("CircuitBreakerSize",binding.spCircuitBreakerSize.selectedItem.toString())
 
         Modem.put("Modem Serial Number",binding.etModemSerialNumber.text.toString())
@@ -299,13 +339,16 @@ class MeterInstallation : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putString("imagePath",mPhotoFile.toString())
+        outState.putString("photoname",photoname)
         Log.e("TAG", "onSaveInstanceState: ")
         super.onSaveInstanceState(outState)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         setImageFile(savedInstanceState?.get("imagePath").toString())
+        setPhotonamee(savedInstanceState?.get("photoname").toString())
         Log.e("TAG", "onRestoreInstanceState: " + savedInstanceState?.get("imagePath"))
+        Log.e("TAG", "onRestoreInstanceState photoname: " + savedInstanceState?.get("photoname"))
         super.onViewStateRestored(savedInstanceState)
     }
 
@@ -318,6 +361,9 @@ class MeterInstallation : Fragment() {
         mPhotoFile= File(path)
     }
 
+    fun setPhotonamee(namee: String) {
+        photoname = namee
+    }
 
 
     private fun selectImageType(context: Context) {
@@ -589,6 +635,72 @@ class MeterInstallation : Fragment() {
         binding.llSimSwap.visibility=View.VISIBLE
     }
 
+
+    fun loadManufecture() {
+        var codelist = SharedPreferenceHelper.getInstance(requireContext()).getCodeList()
+        val data = GsonParser.gsonParser!!.fromJson(codelist, CodeListDataClass::class.java)
+        var manufecture: MutableList<String> = mutableListOf()
+        data.ElectricityMeter.forEach {
+            if (!manufecture.contains(it.Manufacturer)) {
+                manufecture.add(it.Manufacturer)
+            }
+
+        }
+
+        Log.e("TAG", "Question: " + manufecture.toString())
+
+
+
+        spinnerManufacture = ArrayAdapter<String>(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            manufecture
+        )
+
+        spinnerManufacture?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spMeterManufacturer.adapter = spinnerManufacture
+    }
+
+    fun loadModel() {
+        var codelist = SharedPreferenceHelper.getInstance(requireContext()).getCodeList()
+        val data = GsonParser.gsonParser!!.fromJson(codelist, CodeListDataClass::class.java)
+        var model: MutableList<String> = mutableListOf()
+        data.ElectricityMeter.forEach {
+
+            if (it.Manufacturer == binding.spMeterManufacturer.selectedItem) {
+                if (!model.contains(it.Model)) {
+                    model.add(it.Model)
+                }
+
+            }
+
+        }
+
+        Log.e("TAG", "Question: " + model.toString())
+
+        SpinnerModel =
+            ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, model)
+        SpinnerModel?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spMeterModel.adapter = SpinnerModel
+    }
+
+
+    fun findMeterCode() :String{
+        var codelist = SharedPreferenceHelper.getInstance(requireContext()).getCodeList()
+        val data = GsonParser.gsonParser!!.fromJson(codelist, CodeListDataClass::class.java)
+        var code:String=""
+        data.ElectricityMeter.forEach {
+            if(it.Manufacturer==binding.spMeterManufacturer.selectedItem
+                && it.Model==binding.spMeterModel.selectedItem){
+                Log.e("TAG", "findMeterCode: "+it.Code)
+                code=it.Code
+            }
+
+
+        }
+
+        return code
+    }
 
 
 

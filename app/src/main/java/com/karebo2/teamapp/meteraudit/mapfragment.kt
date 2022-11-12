@@ -31,7 +31,9 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.karebo2.teamapp.R
 import com.karebo2.teamapp.databinding.FragmentMapfragmentBinding
 import com.karebo2.teamapp.dataclass.meterData.meterauditDataModel
+import com.karebo2.teamapp.sharedpreference.SharedPreferenceHelper
 import com.karebo2.teamapp.utils.ConstantHelper
+import com.karebo2.teamapp.utils.GsonParser
 import java.util.*
 
 
@@ -51,7 +53,7 @@ class mapfragment : Fragment() , OnMapReadyCallback, GoogleMap.OnMarkerClickList
 
         )
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-
+    var currentSelected:meterauditDataModel?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -169,16 +171,30 @@ class mapfragment : Fragment() , OnMapReadyCallback, GoogleMap.OnMarkerClickList
 
         ConstantHelper.list.forEach {
             if(it.jobCardId==p0.tag){
-                ConstantHelper.currentSelectd=it
+                //ConstantHelper.currentSelectd=it
+                val JsonString: String =
+                    GsonParser.gsonParser!!.toJson(it)
+                SharedPreferenceHelper.getInstance(requireContext()).setCurrentSelected(JsonString)
+
             }
         }
 
-        var address=findAddress(    ConstantHelper.currentSelectd)
+        var data=  SharedPreferenceHelper.getInstance(requireContext()).getCurrentSelected()
+        currentSelected = GsonParser.gsonParser!!.fromJson(data, meterauditDataModel::class.java)
+
+        var address=findAddress(  currentSelected!!)
         ConstantHelper.ADDRESS=address
-        Navigation.findNavController(root!!).navigate(
+
+        try {
+            Navigation.findNavController(root!!).navigate(
 //            R.id.action_nav_meteraudit_to_nav_auditphoto
-            R.id.action_nav_meteraudit_to_nav_accessstatus
-        )
+                R.id.action_nav_meteraudit_to_nav_accessstatus
+            )
+        }catch (e:Exception){
+
+        }
+
+
 
 
         return false

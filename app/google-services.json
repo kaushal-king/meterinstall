@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "233159335740",
+    "project_id": "meter-installation",
+    "storage_bucket": "meter-installation.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:233159335740:android:c89713c280df4540d1c839",
+        "android_client_info": {
+          "package_name": "com.karebo2.teamapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "233159335740-5vg197968esfd3qj7p3alpn5qcuop22e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.karebo2.teamapp",
+            "certificate_hash": "16c2c458678255a5cf085a6e1d9acba8827fbfd5"
+          }
+        },
+        {
+          "client_id": "233159335740-j1o5c5oloqrdi80mfo7u3a9h7hp0l7lb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBP0rxJZHi5gdJoRmB5lDt-GZE_Nh92_S4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "233159335740-j1o5c5oloqrdi80mfo7u3a9h7hp0l7lb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

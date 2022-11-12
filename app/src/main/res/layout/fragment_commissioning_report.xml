@@ -409,17 +409,13 @@
                 </LinearLayout>
 
             </LinearLayout>
-            <TextView
-                android:id="@+id/tv_pdf_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="File Name:- "
-                android:fontFamily="@font/roboto_medium"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_14sdp"
+            <ImageView
+                android:id="@+id/iv_pdf_hex"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_130sdp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_15sdp"
                 android:visibility="gone"
-                android:layout_marginHorizontal="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_10sdp"
                 />
             <Button
                 android:id="@+id/btn_pdf_file"
@@ -430,6 +426,7 @@
                 android:background="@drawable/search_cor"
                 android:fontFamily="@font/roboto_medium"
                 android:text="Add PDF File"
+                android:drawableEnd="@drawable/ic_baseline_camera_alt_24"
                 android:textSize="@dimen/_12sdp"
                 app:backgroundTint="@null" />
 
@@ -491,6 +488,7 @@
                 android:background="@drawable/search_cor"
                 android:fontFamily="@font/roboto_medium"
                 android:text="Config Sms ScreenShot"
+                android:drawableEnd="@drawable/ic_baseline_camera_alt_24"
                 android:textSize="@dimen/_12sdp"
                 app:backgroundTint="@null" />
 
@@ -552,6 +550,7 @@
                 android:background="@drawable/search_cor"
                 android:fontFamily="@font/roboto_medium"
                 android:text="GPRS signal photo"
+                android:drawableEnd="@drawable/ic_baseline_camera_alt_24"
                 android:textSize="@dimen/_12sdp"
                 app:backgroundTint="@null" />
 

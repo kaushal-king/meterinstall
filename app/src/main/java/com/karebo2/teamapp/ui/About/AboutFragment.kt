@@ -83,6 +83,7 @@ var connected=false
         if(SharedPreferenceHelper.getInstance(requireContext()).getJobCard()!="null"){
 
             var job=SharedPreferenceHelper.getInstance(requireContext()).getJobCard()
+            Log.e("TAG", "tt: "+job.toString(), )
             val joblist: Array<meterauditDataModel> = gsonParser!!.fromJson(
                 job,
                 Array<meterauditDataModel>::class.java
@@ -96,7 +97,12 @@ var connected=false
         if(SharedPreferenceHelper.getInstance(requireContext()).getTeamKey()!="null" &&
             SharedPreferenceHelper.getInstance(requireContext()).getOtp()!="null"    ){
             var  navController : NavController = NavHostFragment.findNavController(this)
-            navController.navigate(R.id.action_nav_about_to_nav_meteraudit)
+            try{
+                navController.navigate(R.id.action_nav_about_to_nav_meteraudit)
+            }catch (e:Exception){
+
+            }
+
         }
 
 
@@ -153,14 +159,27 @@ var connected=false
 
 
                         if(SharedPreferenceHelper.getInstance(requireContext()).getOtp()!="null"){
-                            findNavController(root).navigate(
-                                R.id.action_nav_about_to_nav_otpscreen,
-                            )
+
+
+                           try{
+                               findNavController(root).navigate(
+                                   R.id.action_nav_about_to_nav_otpscreen,
+                               )
+                           }catch (e:Exception){
+
+                           }
+
                         }
                         else{
-                            findNavController(root).navigate(
-                                R.id.action_nav_about_to_nav_question,
-                            )
+
+                            try{
+                                findNavController(root).navigate(
+                                    R.id.action_nav_about_to_nav_question,
+                                )
+                            }catch (e:Exception){
+
+                            }
+
                         }
 
                     }

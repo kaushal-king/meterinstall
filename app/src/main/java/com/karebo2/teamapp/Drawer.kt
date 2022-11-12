@@ -17,6 +17,9 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.lifecycleScope
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import com.karebo2.teamapp.Api.Api
 import com.karebo2.teamapp.Api.ApiClient
 import com.karebo2.teamapp.databinding.ActivityDrawerBinding
@@ -28,6 +31,8 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
+import com.uxcam.UXCam
+import com.uxcam.datamodel.UXConfig
 
 class Drawer : AppCompatActivity() {
 
@@ -39,6 +44,7 @@ private lateinit var binding: ActivityDrawerBinding
     lateinit var  notification: Notification
     var notificationManager: NotificationManager? = null
     var channel: NotificationChannel? = null
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +54,15 @@ private lateinit var binding: ActivityDrawerBinding
      setContentView(binding.root)
 
         setSupportActionBar(binding.appBarDrawer.toolbar)
+        firebaseAnalytics = Firebase.analytics
 
+        val config = UXConfig.Builder("yre3h3bnz367fp3")
+            .enableAutomaticScreenNameTagging(true)
+            .enableImprovedScreenCapture(true)
+            .build()
+
+
+        UXCam.startWithConfiguration(config);
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView

@@ -164,9 +164,15 @@ class AuditPhoto : Fragment() {
 //                    GsonParser.gsonParser!!.toJson(data)
 //                bundle.putString("data", JsonString)
 //                addInModel()
-                Navigation.findNavController(root).navigate(
-                    R.id.action_nav_auditphoto_to_nav_accessstatus
+                try {
+                    Navigation.findNavController(root).navigate(
+                        R.id.action_nav_auditphoto_to_nav_accessstatus
                     )
+                }catch (e:Exception){
+
+                }
+
+
 
             }else   {
                 Toast.makeText(requireContext(), "select photo", Toast.LENGTH_LONG).show()
@@ -523,6 +529,7 @@ class AuditPhoto : Fragment() {
 
                 ConstantHelper. PhotoSmsConfigFileUUID=""
                 ConstantHelper. PhotoGprsSignalFileUUID=""
+
                 Navigation.findNavController(binding.root).navigate(
                     R.id.action_nav_auditphoto_to_nav_meteraudit
                 )

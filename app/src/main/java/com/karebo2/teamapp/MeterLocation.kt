@@ -25,11 +25,25 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
+import com.karebo2.teamapp.Api.Api
+import com.karebo2.teamapp.Api.ApiClient
 import com.karebo2.teamapp.databinding.FragmentMeterLocationBinding
 import com.karebo2.teamapp.dataclass.meterData.meterauditDataModel
+import com.karebo2.teamapp.roomdata.RoomDb
+import com.karebo2.teamapp.roomdata.mainbody
+import com.karebo2.teamapp.roomdata.photobody
 import com.karebo2.teamapp.sharedpreference.SharedPreferenceHelper
 import com.karebo2.teamapp.utils.ConstantHelper
+import com.karebo2.teamapp.utils.GsonParser
+import com.karebo2.teamapp.utils.LoaderHelper
+import com.the.firsttask.utils.NetworkUtils
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
+import okhttp3.ResponseBody
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -54,6 +68,7 @@ class MeterLocation : Fragment() , OnMapReadyCallback, GoogleMap.OnMarkerClickLi
         )
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
+    var currentSelected:meterauditDataModel?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,8 +96,16 @@ class MeterLocation : Fragment() , OnMapReadyCallback, GoogleMap.OnMarkerClickLi
             inflater,container,false)
         val root: View = binding.root
 
-        latlong= ConstantHelper.currentSelectd
+        var data=  SharedPreferenceHelper.getInstance(requireContext()).getCurrentSelected()
+        currentSelected = GsonParser.gsonParser!!.fromJson(data, meterauditDataModel::class.java)
+
+
+
+        latlong= currentSelected!!
         binding.tvAddress.text = ConstantHelper.ADDRESS
+
+
+
 
 
 
@@ -98,10 +121,10 @@ class MeterLocation : Fragment() , OnMapReadyCallback, GoogleMap.OnMarkerClickLi
 //                GsonParser.gsonParser!!.toJson(latlong)
 //            bundle.putString("data", JsonString)
            // addInModel()
-            Navigation.findNavController(root).navigate(
-//                R.id.action_nav_meterlocation_to_nav_barcodescan
-                R.id.action_nav_meterlocation_to_nav_siteStart
-                )
+            addAllPhoto(root)
+            submitMeter(root)
+
+
         }
 
         //scrollFunction()
@@ -313,6 +336,319 @@ class MeterLocation : Fragment() , OnMapReadyCallback, GoogleMap.OnMarkerClickLi
 //
 //        binding.etMapDescription.visibility=View.GONE
 //    }
+
+
+
+    fun addAllPhoto(root: View){
+
+//        LoaderHelper.showLoader(requireContext())
+
+        if(NetworkUtils.isConnected==false){
+
+            val photobodyDao= RoomDb.getAppDatabase((requireContext()))?.photobodydao()
+
+            ConstantHelper.photoList.forEach {
+
+//            requests.add( api?.addPhoto64(it.uuid,it.bodyy)!!)
+                photobodyDao?.addphotobody(photobody(it.uuid,it.bodyy))
+                Log.e("TAG", "addAllPhoto uuid: ${it.uuid}", )
+//            Log.e("TAG", "addAllPhoto body: ${it.bodyy}", )
+            }
+
+//            LoaderHelper.dissmissLoader()
+
+
+        }else{
+
+            val client = ApiClient()
+            val api = client.getClient()?.create(Api::class.java)
+
+            val requests =  mutableListOf<Observable<ResponseBody>>()
+
+            ConstantHelper.photoList.forEach {
+
+                requests.add( api?.addPhoto64(it.uuid,it.bodyy)!!)
+                Log.e("TAG", "addAllPhoto uuid: ${it.uuid}", )
+
+//               Log.e("TAG", "addAllPhoto body: ${it.bodyy}", )
+
+            }
+
+
+
+
+            Observable.merge(requests)
+                .take(requests.size.toLong())
+                // executed when the channel is closed or disposed
+                .doFinally {
+                    Log.e("TAG", "addAllPhoto final: ", )
+
+                    ConstantHelper. photoList = mutableListOf()
+//                    LoaderHelper.dissmissLoader()
+
+//
+                }
+                .subscribeOn(Schedulers.io())
+                // it's a question if you want to observe these on main thread, depends on context of your application
+                .subscribe(
+                    { ResponseBody ->
+                        // here you get both the deviceId and the responseBody
+                        Log.e("TAG", "addAllPhoto responce: "+ResponseBody.string(), )
+
+
+
+                        if (ResponseBody == null ) {
+                            Log.e("TAG", "addAllPhoto responce: "+ ResponseBody?.string(), )
+
+                            // request for this deviceId failed, handle it
+                        }
+                    },
+                    { error ->
+                        Log.e("TAG", "Throwable: " + error)
+                    }
+                )
+
+
+        }
+
+
+
+
+    }
+
+
+
+
+
+    fun submitMeter(root:View){
+
+
+        LoaderHelper.showLoader(requireContext())
+
+        // Log.e("TAG", "submitMeter: "+ConstantHelper.submitMeterDataJSON.toString() )
+
+
+        var jobCardId=""
+
+        if(currentSelected!!.subJobCards==null ||currentSelected!!.subJobCards!!.isEmpty())
+        {
+            jobCardId= currentSelected!!.jobCardId.toString();
+        }else{
+            jobCardId=ConstantHelper.currentSelectdSubMeter.task!!.jobCardId
+        }
+
+
+
+
+        if(NetworkUtils.isConnected==false){
+            val mainbodyDao= RoomDb.getAppDatabase((requireContext()))?.mainbodydao()
+            mainbodyDao?.addMainBody(
+                mainbody(
+                    jobCardId,
+                    ConstantHelper.submitJobCardDataJSON.toString())
+            )
+
+
+            Toast.makeText(requireContext(),"successFull Added offline", Toast.LENGTH_SHORT)
+                .show()
+            Log.e("TAG", "submitmeter: offline ", )
+
+
+
+            setJobId()
+            LoaderHelper.dissmissLoader()
+
+            ConstantHelper. submitJobCardDataJSON = JSONObject()
+            ConstantHelper. Meters = JSONObject()
+            ConstantHelper. TEST0123456 = JSONObject()
+            ConstantHelper. Components = JSONObject()
+            ConstantHelper. Feedback = JSONObject()
+            ConstantHelper. Duration = JSONObject()
+
+            ConstantHelper. photoList = mutableListOf()
+
+            val bundle = Bundle()
+            bundle.putString("data","from signature" )
+            try {
+                Navigation.findNavController(root).navigate(
+                    R.id.action_nav_meterlocation_to_nav_meteraudit,bundle
+
+                )
+            }catch (e:Exception){
+
+            }
+
+
+        }
+        else{
+            val client = ApiClient()
+            val api = client.getClient()?.create(Api::class.java)
+            val call = api?.submitMeter2(ConstantHelper.submitJobCardDataJSON.toString())
+            call?.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+
+                    if(response.isSuccessful){
+                        var statuscode=response.code()
+                        Log.e("TAG", "Statuscode of Photo " + statuscode)
+
+                        if(statuscode==200){
+
+
+                            setJobId()
+                            LoaderHelper.dissmissLoader()
+                            ConstantHelper. submitJobCardDataJSON = JSONObject()
+                            ConstantHelper. Meters = JSONObject()
+                            ConstantHelper. TEST0123456 = JSONObject()
+                            ConstantHelper. Components = JSONObject()
+                            ConstantHelper. Feedback = JSONObject()
+                            ConstantHelper. Duration = JSONObject()
+
+                            ConstantHelper. photoList = mutableListOf()
+
+
+
+                            Toast.makeText(requireContext(),"successFull Added", Toast.LENGTH_SHORT)
+                                .show()
+                            Log.e("TAG", "submitmeter: "+response.body()?.string(), )
+
+
+                            val bundle = Bundle()
+                            bundle.putString("data","from signature" )
+                            try {
+                                Navigation.findNavController(root).navigate(
+                                    R.id.action_nav_meterlocation_to_nav_meteraudit,bundle
+
+                                )
+                            }catch (e:Exception){
+
+                            }
+
+
+                        }
+                        else    {
+                            LoaderHelper.dissmissLoader()
+                            Log.e("TAG", "submitmeter2: "+response.body()?.string(), )
+                            Toast.makeText(requireContext(),"some error occured"+ response.body()?.string(), Toast.LENGTH_SHORT)
+                                .show()
+                        }
+
+
+                    }
+                    else{
+//                    Log.e("TAG", "AddToolBox :"+response.body()?.string(), )
+//                    Log.e("TAG", "AddToolBox :"+response.errorBody()?.string(), )
+                        LoaderHelper.dissmissLoader()
+                        Log.e("TAG", "submitmeter3: "+response.errorBody()?.string(), )
+                        Toast.makeText(requireContext(),
+                            "some error occured"+response.errorBody()?.string(), Toast.LENGTH_SHORT)
+                            .show()
+                    }
+
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+//                    LoaderHelper.dissmissLoader()
+                    Log.e("TAG", "onFailure: "+t.localizedMessage, )
+//                    Toast.makeText(requireContext(), "Network Error", Toast.LENGTH_SHORT)
+//                        .show()
+
+
+                    val mainbodyDao= RoomDb.getAppDatabase((requireContext()))?.mainbodydao()
+                    mainbodyDao?.addMainBody(
+                        mainbody(
+                            jobCardId,
+                            ConstantHelper.submitJobCardDataJSON.toString())
+                    )
+
+
+                    Toast.makeText(requireContext(),"successFull Added offline", Toast.LENGTH_SHORT)
+                        .show()
+                    Log.e("TAG", "submitmeter: offline ", )
+
+
+
+                    setJobId()
+                    LoaderHelper.dissmissLoader()
+
+                    ConstantHelper. submitJobCardDataJSON = JSONObject()
+                    ConstantHelper. Meters = JSONObject()
+                    ConstantHelper. TEST0123456 = JSONObject()
+                    ConstantHelper. Components = JSONObject()
+                    ConstantHelper. Feedback = JSONObject()
+                    ConstantHelper. Duration = JSONObject()
+
+                    ConstantHelper. photoList = mutableListOf()
+
+                    val bundle = Bundle()
+                    bundle.putString("data","from signature" )
+                    try {
+                        Navigation.findNavController(root).navigate(
+                            R.id.action_nav_meterlocation_to_nav_meteraudit,bundle
+
+                        )
+                    }catch (e:Exception){
+
+                    }
+
+                }
+
+            })
+
+        }
+
+//
+
+    }
+
+
+    fun setJobId(){
+        var completeJobNumber=SharedPreferenceHelper.getInstance(requireContext()).getCompleteJobId()
+        var jobid=""
+
+        if(currentSelected!!.subJobCards==null ||currentSelected!!.subJobCards!!.isEmpty())
+        {
+            jobid= currentSelected!!.jobCardId.toString();
+        }else{
+            jobid=ConstantHelper.currentSelectdSubMeter.task!!.jobCardId.toString()
+        }
+
+
+        var completeJobNumberList: Array<String>?=null
+        if(completeJobNumber!="null"){
+            completeJobNumberList= GsonParser.gsonParser!!.fromJson(
+                completeJobNumber,
+                Array<String>::class.java
+            )
+        }
+
+        var list: MutableList<String> = mutableListOf()
+        if(completeJobNumberList!=null){
+            list= completeJobNumberList.toMutableList()
+        }
+        Log.e("TAG", "setJobId: "+list.toString(), )
+        list.add(jobid)
+
+
+        val JsonString: String = GsonParser.gsonParser!!.toJson(list)
+        SharedPreferenceHelper.getInstance(requireContext()).setCompleteJobId(JsonString)
+
+
+//
+//        var newList:MutableList<meterauditDataModel> = mutableListOf()
+//
+//        ConstantHelper.list.forEach {
+//            if(!list.contains(it.jobCardId)){
+//
+//                newList.add(it)
+//            }
+//        }
+//
+//        ConstantHelper.list=newList
+
+    }
 
 
 
