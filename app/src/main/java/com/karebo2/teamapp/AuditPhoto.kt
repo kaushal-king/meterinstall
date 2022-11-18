@@ -535,14 +535,14 @@ class AuditPhoto : Fragment() {
                 )
                 true
             }
-            R.id.action_logout -> {
-                SharedPreferenceHelper.getInstance(requireContext()).clearData()
-                Navigation.findNavController(binding.root).navigate(
-                    R.id.action_nav_auditphoto_to_nav_about
-                )
-
-                true
-            }
+//            R.id.action_logout -> {
+//                SharedPreferenceHelper.getInstance(requireContext()).clearData()
+//                Navigation.findNavController(binding.root).navigate(
+//                    R.id.action_nav_auditphoto_to_nav_about
+//                )
+//
+//                true
+//            }
 
             else -> super.onOptionsItemSelected(item)
         }

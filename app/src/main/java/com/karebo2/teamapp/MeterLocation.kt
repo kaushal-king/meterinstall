@@ -122,6 +122,7 @@ class MeterLocation : Fragment() , OnMapReadyCallback, GoogleMap.OnMarkerClickLi
 //            bundle.putString("data", JsonString)
            // addInModel()
             addAllPhoto(root)
+
             submitMeter(root)
 
 
@@ -342,6 +343,8 @@ class MeterLocation : Fragment() , OnMapReadyCallback, GoogleMap.OnMarkerClickLi
     fun addAllPhoto(root: View){
 
 //        LoaderHelper.showLoader(requireContext())
+        Log.e("TAG", "addPhoto size: "+ConstantHelper.photoList.size.toString(), )
+
 
         if(NetworkUtils.isConnected==false){
 
@@ -349,11 +352,13 @@ class MeterLocation : Fragment() , OnMapReadyCallback, GoogleMap.OnMarkerClickLi
 
             ConstantHelper.photoList.forEach {
 
+                Log.e("TAG", "addAllPhoto: "+it.uuid, )
 //            requests.add( api?.addPhoto64(it.uuid,it.bodyy)!!)
                 photobodyDao?.addphotobody(photobody(it.uuid,it.bodyy))
                 Log.e("TAG", "addAllPhoto uuid: ${it.uuid}", )
 //            Log.e("TAG", "addAllPhoto body: ${it.bodyy}", )
             }
+            //submitMeter(root)
 
 //            LoaderHelper.dissmissLoader()
 
@@ -696,14 +701,14 @@ class MeterLocation : Fragment() , OnMapReadyCallback, GoogleMap.OnMarkerClickLi
                 )
                 true
             }
-            R.id.action_logout -> {
-
-                SharedPreferenceHelper.getInstance(requireContext()).clearData()
-                Navigation.findNavController(binding.root).navigate(
-                    R.id.action_nav_meterlocation_to_nav_about
-                )
-                true
-            }
+//            R.id.action_logout -> {
+//
+//                SharedPreferenceHelper.getInstance(requireContext()).clearData()
+//                Navigation.findNavController(binding.root).navigate(
+//                    R.id.action_nav_meterlocation_to_nav_about
+//                )
+//                true
+//            }
 
             else -> super.onOptionsItemSelected(item)
         }

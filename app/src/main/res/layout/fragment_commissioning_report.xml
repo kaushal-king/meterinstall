@@ -409,13 +409,17 @@
                 </LinearLayout>
 
             </LinearLayout>
-            <ImageView
-                android:id="@+id/iv_pdf_hex"
-                android:layout_width="@dimen/_100sdp"
-                android:layout_height="@dimen/_130sdp"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_15sdp"
+            <TextView
+                android:id="@+id/tv_pdf_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="File Name:- "
+                android:fontFamily="@font/roboto_medium"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14sdp"
                 android:visibility="gone"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 />
             <Button
                 android:id="@+id/btn_pdf_file"

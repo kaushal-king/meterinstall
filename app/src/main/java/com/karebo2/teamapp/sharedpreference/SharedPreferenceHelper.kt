@@ -159,7 +159,7 @@ class SharedPreferenceHelper(ctx: Context) {
             Context.MODE_PRIVATE
         )
         val editor = sharedPreferences.edit()
-        editor.putString("jobcard", jobcard)
+        editor.putString("jobcard2", jobcard)
         editor.apply()
     }
 
@@ -168,7 +168,7 @@ class SharedPreferenceHelper(ctx: Context) {
             ConstantHelper.SHARED_PREFERENCE_ID,
             Context.MODE_PRIVATE
         )
-        val jobcard = sharedPreferences.getString("jobcard", null)
+        val jobcard = sharedPreferences.getString("jobcard2", null)
         return jobcard.toString()
 
     }

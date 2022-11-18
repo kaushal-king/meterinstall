@@ -97,6 +97,7 @@ class AccessStatus : Fragment() {
 
 
 
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
 
         if (ActivityCompat.checkSelfPermission(
@@ -121,12 +122,21 @@ class AccessStatus : Fragment() {
         fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, cancellationTokenSource.token)
             .addOnSuccessListener { location ->
                 Log.e("Location", "location is found: $location")
-                ConstantHelper.locationn=location
+               // Toast.makeText(requireContext(),"location is found: $location",Toast.LENGTH_SHORT).show()
+                if(location!=null){
+                    ConstantHelper.locationn=location
+                }else{
+                    val loc = Location("dummyprovider")
+                    currentSelected?.latitude?.let { loc.setLatitude(it) }
+                    currentSelected?.longitude?.let { loc.setLongitude(it) }
+                    ConstantHelper.locationn=loc
+                }
+
                 LoaderHelper.dissmissLoader()
 
             }
             .addOnFailureListener { exception ->
-                Toast.makeText(requireContext(),"Oops location failed to Fetch: $exception",Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),"Oops location failed to Fetch",Toast.LENGTH_SHORT).show()
                 Log.e("Location", "Oops location failed with exception: $exception")
                 val loc = Location("dummyprovider")
                 currentSelected?.latitude?.let { loc.setLatitude(it) }
@@ -755,14 +765,14 @@ fun showConfirmDialog(root:View){
                 )
                 true
             }
-            R.id.action_logout -> {
-
-                SharedPreferenceHelper.getInstance(requireContext()).clearData()
-                Navigation.findNavController(binding.root).navigate(
-                    R.id.action_nav_accessstatus_to_nav_about
-                )
-                true
-            }
+//            R.id.action_logout -> {
+//
+//                SharedPreferenceHelper.getInstance(requireContext()).clearData()
+//                Navigation.findNavController(binding.root).navigate(
+//                    R.id.action_nav_accessstatus_to_nav_about
+//                )
+//                true
+//            }
 
             else -> super.onOptionsItemSelected(item)
         }

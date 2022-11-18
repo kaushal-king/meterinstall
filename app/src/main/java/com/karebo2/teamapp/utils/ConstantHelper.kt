@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.location.Location
 import android.util.Base64
+import android.util.Log
 import com.karebo2.teamapp.dataclass.meterData.SubJobCard
 import com.karebo2.teamapp.dataclass.meterData.meterauditDataModel
 import com.karebo2.teamapp.dataclass.photoUploadDataClass
@@ -124,6 +125,7 @@ object ConstantHelper {
     fun fileToBase64(yourFile: File): String? {
         val size = yourFile.length().toInt()
         val bytes = ByteArray(size)
+
         try {
             val buf = BufferedInputStream(FileInputStream(yourFile))
             buf.read(bytes, 0, bytes.size)

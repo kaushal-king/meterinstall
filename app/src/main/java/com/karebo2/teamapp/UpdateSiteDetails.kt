@@ -825,6 +825,8 @@ class UpdateSiteDetails : Fragment() {
             ConstantHelper.voltagepointafterUUID=newUUID.toString()
 
         }
+        Log.e("TAG", "addPhoto size: "+ConstantHelper.photoList.size.toString(), )
+
 
 
 
@@ -896,14 +898,14 @@ class UpdateSiteDetails : Fragment() {
                 )
                 true
             }
-            R.id.action_logout -> {
-
-                SharedPreferenceHelper.getInstance(requireContext()).clearData()
-                Navigation.findNavController(binding.root).navigate(
-                    R.id.action_nav_updateSiteDetails_to_nav_about
-                )
-                true
-            }
+//            R.id.action_logout -> {
+//
+//                SharedPreferenceHelper.getInstance(requireContext()).clearData()
+//                Navigation.findNavController(binding.root).navigate(
+//                    R.id.action_nav_updateSiteDetails_to_nav_about
+//                )
+//                true
+//            }
 
             else -> super.onOptionsItemSelected(item)
         }

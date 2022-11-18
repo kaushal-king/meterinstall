@@ -84,15 +84,21 @@ var connected=false
 
             var job=SharedPreferenceHelper.getInstance(requireContext()).getJobCard()
             Log.e("TAG", "tt: "+job.toString(), )
-            val joblist: Array<meterauditDataModel> = gsonParser!!.fromJson(
-                job,
-                Array<meterauditDataModel>::class.java
-            )
-            ConstantHelper.list= joblist.toList()
 
-            Log.e("TAG", "joblist.jobcard: " + ConstantHelper.list )
+            if(job.substring(0,1)=="["){
+                val joblist: Array<meterauditDataModel> = gsonParser!!.fromJson(
+                    job,
+                    Array<meterauditDataModel>::class.java
+                )
+                ConstantHelper.list= joblist.toList()
+
+                Log.e("TAG", "joblist.jobcard: " + ConstantHelper.list )
+            }
+
+
 
         }
+
         LoaderHelper.dissmissLoader()
         if(SharedPreferenceHelper.getInstance(requireContext()).getTeamKey()!="null" &&
             SharedPreferenceHelper.getInstance(requireContext()).getOtp()!="null"    ){
@@ -204,8 +210,9 @@ var connected=false
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 LoaderHelper.dissmissLoader()
-                Toast.makeText(requireContext(), "Network Error", Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(), "offline mode", Toast.LENGTH_SHORT)
                     .show()
+
                 tt()
 
             }

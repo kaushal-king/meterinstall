@@ -117,7 +117,7 @@ class Questions : Fragment() {
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 LoaderHelper.dissmissLoader()
-                Toast.makeText(requireContext(), "Network Error", Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(), "offline mode", Toast.LENGTH_SHORT)
                     .show()
             }
 

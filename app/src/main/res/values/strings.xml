@@ -43,45 +43,53 @@
     </string-array>
 
     <string-array name="phase">
+        <item>Select phase</item>
         <item>Single Phase </item>
         <item>Three Phase</item>
 
     </string-array>
 
     <string-array name="wire">
+        <item>Select wire</item>
         <item>3 Wire</item>
         <item>4 Wire</item>
 
     </string-array>
 
     <string-array name="cts_used">
+        <item>Select cts used</item>
         <item>New</item>
         <item>Existing</item>
 
     </string-array>
 
     <string-array name="ct_type">
+        <item>Select ct type</item>
         <item>Ring</item>
         <item>Split Core</item>
 
     </string-array>
 
     <string-array name="meter_manufacturer">
+        <item>Select Meter manufacturer</item>
         <item>Itron</item>
         <item>Hexing</item>
     </string-array>
 
     <string-array name="meter_model">
+        <item>Select Meter model</item>
         <item>SL7000</item>
         <item>HXF300</item>
 
     </string-array>
 
     <string-array name="vt_ratio">
+        <item>Select vt ratio</item>
         <item>No VTs</item>
     </string-array>
 
     <string-array name="ct_ratio_meter">
+        <item>Select ct ratio </item>
         <item>5 : 5</item>
         <item>50 : 5</item>
         <item>75 : 5</item>
@@ -111,29 +119,34 @@
 
 
     <string-array name="circuit_breaker_size">
+        <item>Select Circuit breaker size</item>
         <item>10 A CB</item>
     </string-array>
 
 
     <string-array name="question">
+        <item>Select Option</item>
         <item>yes</item>
         <item>no</item>
     </string-array>
 
 
     <string-array name="question2">
+        <item>select Option</item>
         <item>yes</item>
         <item>no</item>
         <item>Not applicable</item>
     </string-array>
 
     <string-array name="remote_read">
+        <item>select Option</item>
         <item>yes</item>
         <item>no</item>
         <item>Ontec Tech Not Available</item>
     </string-array>
 
     <string-array name="gprs_signal">
+        <item>Select gprs signal</item>
         <item>Good</item>
         <item>Medium</item>
         <item>Bad</item>
@@ -156,6 +169,7 @@
     </string-array>
 
     <string-array name="voltage">
+        <item>Select Voltage</item>
         <item>230</item>
         <item>400</item>
     </string-array>
@@ -166,6 +180,7 @@
     </string-array>
 
     <string-array name="powerlimit">
+        <item>Select Powerlimit</item>
         <item>0</item>
         <item>5</item>
         <item>10</item>

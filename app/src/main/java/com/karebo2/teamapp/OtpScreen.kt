@@ -170,7 +170,7 @@ class OtpScreen : Fragment() {
 //            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
 //                LoaderHelper.dissmissLoader()
 //                Log.e("TAG", "onFailure: "+t.localizedMessage, )
-//                Toast.makeText(requireContext(), "Network Error", Toast.LENGTH_SHORT)
+//                Toast.makeText(requireContext(), "offline mode", Toast.LENGTH_SHORT)
 //                    .show()
 //            }
 //
@@ -269,7 +269,7 @@ class OtpScreen : Fragment() {
 
              override fun onFailure(call: Call<List<meterauditDataModel>>, t: Throwable) {
                  LoaderHelper.dissmissLoader()
-                 Toast.makeText(requireActivity(), "Network Error", Toast.LENGTH_SHORT)
+                 Toast.makeText(requireActivity(), "offline mode", Toast.LENGTH_SHORT)
                      .show()
              }
 
@@ -324,7 +324,7 @@ class OtpScreen : Fragment() {
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 LoaderHelper.dissmissLoader()
-                Toast.makeText(requireActivity(), "Network Error", Toast.LENGTH_SHORT)
+                Toast.makeText(requireActivity(), "offline mode", Toast.LENGTH_SHORT)
                     .show()
             }
 
@@ -370,6 +370,7 @@ class OtpScreen : Fragment() {
         val JsonString: String =
             GsonParser.gsonParser!!.toJson(newList)
         SharedPreferenceHelper.getInstance(requireContext()).setJobCard(JsonString)
+
 
 
 

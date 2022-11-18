@@ -6,6 +6,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.location.Address
 import android.location.Geocoder
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,6 +42,8 @@ class meterauditadapter(private val mList: List<meterauditDataModel>,
 //                GsonParser.gsonParser!!.toJson(mList[viewHolder.adapterPosition])
 //            bundle.putString("data", JsonString)
 
+
+
             val clipboard: ClipboardManager? =
                mCtx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
             val clip = ClipData.newPlainText("label", mList[viewHolder.adapterPosition].jobCardId.toString())
@@ -64,6 +67,7 @@ class meterauditadapter(private val mList: List<meterauditDataModel>,
             SharedPreferenceHelper.getInstance(mCtx).setCurrentSelected(JsonString)
 
             if(mList[viewHolder.adapterPosition].subJobCards==null || mList[viewHolder.adapterPosition].subJobCards!!.isEmpty() ){
+
 
 
                 try {

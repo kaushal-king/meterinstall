@@ -5,8 +5,8 @@
         android:title="JOB CARDS"
         android:orderInCategory="100"
         app:showAsAction="never" />
-    <item android:id="@+id/action_logout"
-        android:title="LOGOUT"
-        android:orderInCategory="100"
-        app:showAsAction="never" />
+<!--    <item android:id="@+id/action_logout"-->
+<!--        android:title="LOGOUT"-->
+<!--        android:orderInCategory="100"-->
+<!--        app:showAsAction="never" />-->
 </menu>

@@ -1,6 +1,7 @@
 package com.karebo2.teamapp
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import com.karebo2.teamapp.databinding.FragmentMeterAuditBinding
 import com.karebo2.teamapp.meteraudit.chartFragment
 import com.karebo2.teamapp.meteraudit.listfragment
 import com.karebo2.teamapp.meteraudit.mapfragment
+import com.karebo2.teamapp.sharedpreference.SharedPreferenceHelper
 import com.karebo2.teamapp.utils.LoaderHelper
 
 class MeterAudit : Fragment() ,TabLayout.OnTabSelectedListener{

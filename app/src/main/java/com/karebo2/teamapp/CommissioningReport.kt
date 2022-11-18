@@ -8,32 +8,27 @@ import android.content.pm.PackageManager
 import android.database.Cursor
 import android.location.Location
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.provider.OpenableColumns
 import android.util.Log
 import android.view.*
 import android.widget.AdapterView
 import android.widget.CompoundButton
-import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
+import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.tasks.CancellationTokenSource
 import com.karebo2.teamapp.databinding.FragmentCommissioningReportBinding
 import com.karebo2.teamapp.dataclass.photoUploadDataClass
-import com.karebo2.teamapp.utils.LoaderHelper
-import com.karebo2.teamapp.sharedpreference.SharedPreferenceHelper
 import com.karebo2.teamapp.utils.ConstantHelper
+import com.karebo2.teamapp.utils.LoaderHelper
 import org.json.JSONObject
 import java.io.*
 import java.text.SimpleDateFormat
@@ -49,7 +44,7 @@ class CommissioningReport : Fragment() {
     private var PdfHexingFile: File? = null
     private var PhotoSmsConfigFile: File? = null
     private var PhotoGprsSignalFile: File? = null
-    lateinit var photoname: String
+     var photoname: String=""
     var  locationn : Location? =ConstantHelper.locationn
 
 //    var jsonData: MeterDataModel? =null
@@ -156,20 +151,20 @@ class CommissioningReport : Fragment() {
                 id: Long
             ) {
                 if(binding.spPdfComplete.selectedItemPosition ==2){
-                    binding.ivPdfHex.visibility=View.GONE
+//                    binding.ivPdfHex.visibility=View.GONE
                     binding.btnPdfFile.visibility=View.GONE
 
                 }else{
-                    if(PdfHexingFile!=null){
-                        binding.ivPdfHex.visibility=View.VISIBLE
-                    }
+//                    if(PdfHexingFile!=null){
+//                        binding.ivPdfHex.visibility=View.VISIBLE
+//                    }
 
                     binding.btnPdfFile.visibility=View.VISIBLE
                 }
             }
 
             override fun onNothingSelected(parentView: AdapterView<*>?) {
-                binding.ivPdfHex.visibility=View.GONE
+//                binding.ivPdfHex.visibility=View.GONE
                 binding.btnPdfFile.visibility=View.GONE
             }
         })
@@ -300,7 +295,21 @@ class CommissioningReport : Fragment() {
             }else if( binding.etBluePhaseVoltageCurrent.text.isEmpty()  ||binding.etBluePhaseVoltageCurrent.text.equals(null)){
                 Toast.makeText(requireContext(),"Add current blue Phase Voltage",Toast.LENGTH_SHORT).show()
 
-            } else  if(PhotoGprsSignalFile==null){
+            }
+            else if(binding.spPdfComplete.selectedItemPosition==0){
+                Toast.makeText(requireContext(),"Select hex pdf complete",Toast.LENGTH_SHORT).show()
+
+            } else if(binding.spConfigSms.selectedItemPosition==0){
+                Toast.makeText(requireContext(),"Select config sms successfully",Toast.LENGTH_SHORT).show()
+
+            } else if(binding.spGprsSignal.selectedItemPosition==0){
+                Toast.makeText(requireContext(),"Select GPRS signal strength",Toast.LENGTH_SHORT).show()
+
+            } else if(binding.spRemoteRead.selectedItemPosition==0){
+                Toast.makeText(requireContext(),"Select remote read possible",Toast.LENGTH_SHORT).show()
+
+            }
+            else  if(PhotoGprsSignalFile==null){
                 Toast.makeText(requireContext(),"Add Gprs Signal Photo ",Toast.LENGTH_SHORT).show()
             }else  if(PhotoSmsConfigFile==null){
                 Toast.makeText(requireContext(),"Add SmsConfig Photo ",Toast.LENGTH_SHORT).show()
@@ -348,7 +357,7 @@ class CommissioningReport : Fragment() {
 
 
          HexingPDFFile.put("Key",binding.spPdfComplete.selectedItem)
-//         var pdfBase64file=ConstantHelper.fileToBase64(PdfHexingFile!!)
+         var pdfBase64file=ConstantHelper.fileToBase64(PdfHexingFile!!)
          HexingPDFFile.put("Value",ConstantHelper.PhotopdfhexUUID)
          Commissioning.put("HexingPDFFile",HexingPDFFile)
 
@@ -406,6 +415,7 @@ class CommissioningReport : Fragment() {
 
 
 
+         Log.e("json at Commissionnn", Commissioning.toString())
          Log.e("json at Commission", ConstantHelper.Components.toString())
          Log.e("json at TEST0123456", ConstantHelper.TEST0123456.toString())
 
@@ -493,18 +503,19 @@ class CommissioningReport : Fragment() {
 
 
 
-//    fun loadPdfFile(){
-//        PdfHexingFile = File(mPhotoFile?.path!!)
-////        addPhoto(4)
-//        Log.e("TAG", "Load SMS Photo File: $PhotoSmsConfigFile")
-//
-//        binding.tvPdfName.text= "File Name:--   "+PdfHexingFile?.path.toString()
-//        showPdfFile()
-//    }
+    fun loadPdfFile(){
 
-//    fun showPdfFile() {
-//        binding.tvPdfName.visibility = View.VISIBLE
-//    }
+        PdfHexingFile = File(mPhotoFile?.path!!)
+        addPhoto(3)
+        Log.e("TAG", "Load SMS Photo File: $PdfHexingFile")
+
+        binding.tvPdfName.text= "File Name:--   "+PdfHexingFile?.path.toString()
+        showPdfFile()
+    }
+
+    fun showPdfFile() {
+        binding.tvPdfName.visibility = View.VISIBLE
+    }
 
 
 
@@ -519,19 +530,19 @@ class CommissioningReport : Fragment() {
         showVoltageImg()
     }
 
-    fun loadpdfImages(){
-        PdfHexingFile = File(mPhotoFile?.path!!)
-        addPhoto(3)
-        Log.e("TAG", "Load SMS Photo File: $PdfHexingFile")
-        Glide.with(requireContext())
-            .load(PdfHexingFile)
-            .into(binding.ivPdfHex)
-        showpdfhex()
-    }
-
-    fun showpdfhex(){
-        binding.ivPdfHex.visibility=View.VISIBLE
-    }
+//    fun loadpdfImages(){
+//        PdfHexingFile = File(mPhotoFile?.path!!)
+//        addPhoto(3)
+//        Log.e("TAG", "Load SMS Photo File: $PdfHexingFile")
+//        Glide.with(requireContext())
+//            .load(PdfHexingFile)
+//            .into(binding.ivPdfHex)
+//        showpdfhex()
+//    }
+//
+//    fun showpdfhex(){
+//        binding.ivPdfHex.visibility=View.VISIBLE
+//    }
 
      fun showVoltageImg() {
          binding.ivConfigSms.visibility = View.VISIBLE
@@ -622,8 +633,8 @@ class CommissioningReport : Fragment() {
                     Log.e("TAG", "selectImageType: Camera")
                     dispatchTakePictureIntent()
                 } else if(photoname==ConstantHelper.PDF_COMPLETE){
-                    dispatchGalleryIntent()
-//                    dispatchDocumetIntent()
+                  //  dispatchGalleryIntent()
+                   dispatchDocumetIntent()
                 }
 
 
@@ -669,11 +680,11 @@ class CommissioningReport : Fragment() {
 
                 Log.e("Photo2", mPhotoFile.toString())
 
-                if(photoname!=ConstantHelper.PDF_COMPLETE){
+//                if(photoname!=ConstantHelper.PDF_COMPLETE){
                     loadSmsConfigImages()
-                }else{
-                    loadpdfImages()
-                }
+//                }else{
+//                    loadpdfImages()
+//                }
 
 
             }
@@ -721,51 +732,67 @@ class CommissioningReport : Fragment() {
     }
 
 
-//    private var activityResultLauncherDocumet: ActivityResultLauncher<Intent> =
-//
-//        registerForActivityResult(
-//            ActivityResultContracts.StartActivityForResult()
-//        ) { result: ActivityResult ->
-//            if (result.resultCode == Activity.RESULT_OK) {
-//                var result = result.data
-//                var selectedDocument: Uri = result?.data!!
-//                mPhotoFile = File(getRealPathFromUri(selectedDocument))
-//
-//                val sourcePath = requireContext().getExternalFilesDir(null).toString()
-//                Log.e("Photo2", mPhotoFile.toString())
-//
-//                try {
-//                    copyFileStream(
-//                        File(sourcePath + "/" + mPhotoFile!!.name),
-//                        selectedDocument,
-//                        requireContext()
-//                    )
-//                }catch (e:Exception){
-//
-//                }
-//
-//                Log.e("Photo2", mPhotoFile.toString())
-//                loadPdfFile()
-//
-//            }
-//
-//
-//        }
+    private var activityResultLauncherDocumet: ActivityResultLauncher<Intent> =
 
-//    private fun dispatchDocumetIntent() {
-//
-//        val pickDocument = Intent(
-//            Intent.ACTION_OPEN_DOCUMENT_TREE
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                var result = result.data
+                var selectedDocument: Uri = result?.data!!
+                Log.e("TAG", "selectedDocument: "+selectedDocument.toString(), )
+                var realPath=getRealPathFromUriDocument(selectedDocument)
+
+                if(realPath.equals(null)){
+                    Toast.makeText(requireActivity(),"pdf is not selected",Toast.LENGTH_LONG).show()
+                }else{
+
+                    mPhotoFile = File(realPath)
+
+                    val sourcePath = requireContext().getExternalFilesDir(null).toString()
+                    Log.e("Photo2", mPhotoFile.toString())
+
+                        try {
+                            copyFileStream(
+                                File(sourcePath + "/" + mPhotoFile!!.name),
+                                selectedDocument,
+                                requireContext()
+                            )
+                        }catch (e:Exception){
+
+                        }
+
+                    if(mPhotoFile!!.length()<500000){
+                        Log.e("Photo2", mPhotoFile.toString())
+                        Log.e("Photo3", mPhotoFile!!.length().toString())
+
+                        loadPdfFile()
+                    }else{
+                        Toast.makeText(requireActivity(),"Select pdf less then 400 kb ",Toast.LENGTH_LONG).show()
+                    }
+
+
+                }
+
+
+
+            }
+
+
+        }
+
+    private fun dispatchDocumetIntent() {
+
+        val pdfIntent = Intent(Intent.ACTION_GET_CONTENT)
+        pdfIntent.type = "application/pdf"
+        pdfIntent.addCategory(Intent.CATEGORY_OPENABLE)
+        activityResultLauncherDocumet.launch(pdfIntent )
+
+//        startActivityForResult(
+//            pickPhoto,
+//            REQUEST_GALLERY_PHOTO
 //        )
-//        pickDocument .setAction(Intent.ACTION_GET_CONTENT)
-//        pickDocument .addCategory(Intent.CATEGORY_OPENABLE)
-//        pickDocument .type="application/pdf"
-//        activityResultLauncherDocumet.launch(pickDocument )
-////        startActivityForResult(
-////            pickPhoto,
-////            REQUEST_GALLERY_PHOTO
-////        )
-//    }
+    }
 
 
     private fun dispatchTakePictureIntent() {
@@ -822,12 +849,56 @@ class CommissioningReport : Fragment() {
             assert(cursor != null)
             val columnIndex = cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
             cursor.moveToFirst()
+            var r= cursor.getString(columnIndex)
+            Log.e("TAG", "getRealPathFromUri: "+r, )
             cursor.getString(columnIndex)
         } finally {
             cursor?.close()
         }
     }
 
+    fun getRealPathFromUriDocument(contentUri: Uri?): String? {
+
+        val uriString: String = contentUri.toString()
+        var pdfName: String? = null
+        if (uriString.startsWith("content://")) {
+            var myCursor: Cursor? = null
+             try {
+                // Setting the PDF to the TextView
+                myCursor =requireContext().contentResolver.query(contentUri!!, null, null, null, null)
+                if (myCursor != null && myCursor.moveToFirst()) {
+                    pdfName = myCursor.getString(myCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+                    Log.e("TAG", "selectedDocument name: "+pdfName.toString(), )
+                    return pdfName
+                }
+            } finally {
+                myCursor?.close()
+            }
+        }
+        return pdfName
+    }
+
+
+
+//    fun getRealPathFromUriDocument(contentUri: Uri?): String? {
+//        var cursor: Cursor? = null
+//        return try {
+//            val proj = arrayOf(MediaStore.Images.Media.DATA)
+//            cursor = requireContext().contentResolver.query(contentUri!!,
+//                arrayOf(OpenableColumns.DISPLAY_NAME, OpenableColumns.SIZE), null, null, null)
+//            assert(cursor != null)
+//
+//            cursor!!.moveToFirst()
+//
+//            val columnIndex = cursor!!.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+//            val size = cursor.getLong(cursor.getColumnIndex(OpenableColumns.SIZE))
+//
+//            cursor.getString(columnIndex)
+//        } finally {
+//            cursor?.close()
+//        }
+//    }
+//
 
     fun addPhoto(type:Int) {
 
@@ -847,7 +918,7 @@ class CommissioningReport : Fragment() {
         }else if(type==2){
             base64Image = ConstantHelper.getBase64(PhotoGprsSignalFile!!)
         }else if(type==3){
-            base64Image = ConstantHelper.getBase64(PdfHexingFile!!)
+            base64Image = ConstantHelper.fileToBase64(PdfHexingFile!!).toString()
         }
 
 
@@ -885,6 +956,7 @@ class CommissioningReport : Fragment() {
 
         }
 
+        Log.e("TAG", "addPhoto size: " + ConstantHelper.photoList.size.toString())
 
 
     }
@@ -941,14 +1013,14 @@ class CommissioningReport : Fragment() {
                 )
                 true
             }
-            R.id.action_logout -> {
-
-                SharedPreferenceHelper.getInstance(requireContext()).clearData()
-                Navigation.findNavController(binding.root).navigate(
-                    R.id.action_nav_commissioningReport_to_nav_about
-                )
-                true
-            }
+//            R.id.action_logout -> {
+//
+//                SharedPreferenceHelper.getInstance(requireContext()).clearData()
+//                Navigation.findNavController(binding.root).navigate(
+//                    R.id.action_nav_commissioningReport_to_nav_about
+//                )
+//                true
+//            }
 
             else -> super.onOptionsItemSelected(item)
         }

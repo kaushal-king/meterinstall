@@ -52,7 +52,7 @@ class MeterInstallation : Fragment() {
     var SpinnerModel: ArrayAdapter<String>? = null
 
     var  locationn : Location? =ConstantHelper.locationn
-    lateinit var photoname: String
+     var photoname: String=""
 
 //    private val permission = arrayOf(
 //        Manifest.permission.ACCESS_FINE_LOCATION,
@@ -166,6 +166,40 @@ class MeterInstallation : Fragment() {
                 else if(binding.etSerialNumber.text.isEmpty()|| binding.etSerialNumber.equals(null)){
                     Toast.makeText(requireContext(),"Enter serial number",Toast.LENGTH_SHORT).show()
                 }
+                else if(binding.etMeterYear.text.isEmpty()|| binding.etMeterYear.equals(null)){
+                    Toast.makeText(requireContext(),"Enter meter year",Toast.LENGTH_SHORT).show()
+                }
+                else if(binding.spSupplyVoltage.selectedItemPosition==0){
+                    Toast.makeText(requireContext(),"Select supply voltage",Toast.LENGTH_SHORT).show()
+
+                }else if(binding.spPhase.selectedItemPosition==0){
+                    Toast.makeText(requireContext(),"Select phase",Toast.LENGTH_SHORT).show()
+
+                }else if(binding.spWire.selectedItemPosition==0){
+                    Toast.makeText(requireContext(),"Select wire",Toast.LENGTH_SHORT).show()
+
+                }else if(binding.spCtsUsed.selectedItemPosition==0){
+                    Toast.makeText(requireContext(),"Select cts used",Toast.LENGTH_SHORT).show()
+
+                }else if(binding.spCtType.selectedItemPosition==0){
+                    Toast.makeText(requireContext(),"Select CT type",Toast.LENGTH_SHORT).show()
+
+                }else if(binding.spCtRatioMeter.selectedItemPosition==0){
+                    Toast.makeText(requireContext(),"Select CT ratio configured",Toast.LENGTH_SHORT).show()
+
+                }else if(binding.spCtRatioSite.selectedItemPosition==0){
+                    Toast.makeText(requireContext(),"Select CT ratio on site",Toast.LENGTH_SHORT).show()
+
+                }else if(binding.spVtRatio.selectedItemPosition==0){
+                    Toast.makeText(requireContext(),"Select vt ratio",Toast.LENGTH_SHORT).show()
+
+                }else if(binding.spCircuitBreakerConnected.selectedItemPosition==0){
+                    Toast.makeText(requireContext(),"Select new circuit breaker connected",Toast.LENGTH_SHORT).show()
+
+                }else if(binding.spCircuitBreakerSize.selectedItemPosition==0){
+                    Toast.makeText(requireContext(),"Select circuit breaker size",Toast.LENGTH_SHORT).show()
+
+                }
                 else if(binding.etModemManufacturer.text.isEmpty()|| binding.etModemManufacturer.equals(null)){
                     Toast.makeText(requireContext(),"Enter Modem Manufacturer",Toast.LENGTH_SHORT).show()
                 }else if(binding.etModemType.text.isEmpty()|| binding.etModemType.equals(null)){
@@ -192,10 +226,55 @@ class MeterInstallation : Fragment() {
                 }
 
             }else{
-                addInModel()
-                Navigation.findNavController(root).navigate(
-                    R.id.action_nav_meterinstallation_to_nav_commissioningReport,
-                )
+                if(binding.etSerialNumber.text.isEmpty()|| binding.etSerialNumber.equals(null)){
+                    Toast.makeText(requireContext(),"Enter serial number",Toast.LENGTH_SHORT).show()
+                }
+                else if(binding.etMeterYear.text.isEmpty()|| binding.etMeterYear.equals(null)){
+                    Toast.makeText(requireContext(),"Enter meter year",Toast.LENGTH_SHORT).show()
+                }
+                else if(binding.spSupplyVoltage.selectedItemPosition==0){
+                    Toast.makeText(requireContext(),"Select supply voltage",Toast.LENGTH_SHORT).show()
+
+                }else if(binding.spPhase.selectedItemPosition==0){
+                    Toast.makeText(requireContext(),"Select phase",Toast.LENGTH_SHORT).show()
+
+                }else if(binding.spWire.selectedItemPosition==0){
+                    Toast.makeText(requireContext(),"Select wire",Toast.LENGTH_SHORT).show()
+
+                }else if(binding.spCtsUsed.selectedItemPosition==0){
+                    Toast.makeText(requireContext(),"Select cts used",Toast.LENGTH_SHORT).show()
+
+                }else if(binding.spCtType.selectedItemPosition==0){
+                    Toast.makeText(requireContext(),"Select CT type",Toast.LENGTH_SHORT).show()
+
+                }else if(binding.spCtRatioMeter.selectedItemPosition==0){
+                    Toast.makeText(requireContext(),"Select CT ratio configured",Toast.LENGTH_SHORT).show()
+
+                }else if(binding.spCtRatioSite.selectedItemPosition==0){
+                    Toast.makeText(requireContext(),"Select CT ratio on site",Toast.LENGTH_SHORT).show()
+
+                }else if(binding.spVtRatio.selectedItemPosition==0){
+                    Toast.makeText(requireContext(),"Select vt ratio",Toast.LENGTH_SHORT).show()
+
+                }else if(binding.spCircuitBreakerConnected.selectedItemPosition==0){
+                    Toast.makeText(requireContext(),"Select new circuit breaker connected",Toast.LENGTH_SHORT).show()
+
+                }else if(binding.spCircuitBreakerSize.selectedItemPosition==0){
+                    Toast.makeText(requireContext(),"Select circuit breaker size",Toast.LENGTH_SHORT).show()
+
+                }else{
+                    addInModel()
+                    Navigation.findNavController(root).navigate(
+                        R.id.action_nav_meterinstallation_to_nav_commissioningReport,
+                    )
+                }
+
+
+
+
+
+
+
             }
 
         }
@@ -749,14 +828,14 @@ class MeterInstallation : Fragment() {
                 )
                 true
             }
-            R.id.action_logout -> {
-
-                SharedPreferenceHelper.getInstance(requireContext()).clearData()
-                Navigation.findNavController(binding.root).navigate(
-                    R.id.action_nav_meterinstallation_to_nav_about
-                )
-                true
-            }
+//            R.id.action_logout -> {
+//
+//                SharedPreferenceHelper.getInstance(requireContext()).clearData()
+//                Navigation.findNavController(binding.root).navigate(
+//                    R.id.action_nav_meterinstallation_to_nav_about
+//                )
+//                true
+//            }
 
             else -> super.onOptionsItemSelected(item)
         }
