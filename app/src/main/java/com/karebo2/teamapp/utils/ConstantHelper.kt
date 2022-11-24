@@ -39,6 +39,7 @@ object ConstantHelper {
 
     const val CONFIG_SMS="ConfigSms"
     const val GPRS_SIGNAL="GprsSignal"
+    const val ONTECH_CONFIRM="ontechconfirm"
     const val PDF_COMPLETE="Pdf_Complete"
 
     const val SIM_CARD="SimCard"
@@ -70,6 +71,7 @@ object ConstantHelper {
 
     var PhotoSmsConfigFileUUID=""
     var PhotoGprsSignalFileUUID=""
+    var PhotoOntechFileUUID=""
     var PhotopdfhexUUID=""
 
 //    lateinit var currentSelectd: meterauditDataModel

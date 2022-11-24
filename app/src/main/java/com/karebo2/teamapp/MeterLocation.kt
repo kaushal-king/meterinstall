@@ -121,9 +121,16 @@ class MeterLocation : Fragment() , OnMapReadyCallback, GoogleMap.OnMarkerClickLi
 //                GsonParser.gsonParser!!.toJson(latlong)
 //            bundle.putString("data", JsonString)
            // addInModel()
-            addAllPhoto(root)
 
-            submitMeter(root)
+            if(!NetworkUtils.isConnected){
+                addAllPhoto(root)
+            }else{
+                addAllPhoto(root)
+                submitMeter(root)
+            }
+
+
+
 
 
         }
@@ -347,20 +354,22 @@ class MeterLocation : Fragment() , OnMapReadyCallback, GoogleMap.OnMarkerClickLi
 
 
         if(NetworkUtils.isConnected==false){
+            LoaderHelper.showLoader(requireContext())
 
             val photobodyDao= RoomDb.getAppDatabase((requireContext()))?.photobodydao()
 
             ConstantHelper.photoList.forEach {
 
                 Log.e("TAG", "addAllPhoto: "+it.uuid, )
-//            requests.add( api?.addPhoto64(it.uuid,it.bodyy)!!)
+
                 photobodyDao?.addphotobody(photobody(it.uuid,it.bodyy))
-                Log.e("TAG", "addAllPhoto uuid: ${it.uuid}", )
+                Log.e("TAG", "addAllPhoto uuid: ${it.uuid}  ${it.bodyy.substring(1,20)}", )
 //            Log.e("TAG", "addAllPhoto body: ${it.bodyy}", )
             }
-            //submitMeter(root)
+            LoaderHelper.dissmissLoader()
+            submitMeter(root)
 
-//            LoaderHelper.dissmissLoader()
+
 
 
         }else{

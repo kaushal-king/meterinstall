@@ -44,6 +44,7 @@ class CommissioningReport : Fragment() {
     private var PdfHexingFile: File? = null
     private var PhotoSmsConfigFile: File? = null
     private var PhotoGprsSignalFile: File? = null
+    private var PhotoOntechFile: File? = null
      var photoname: String=""
     var  locationn : Location? =ConstantHelper.locationn
 
@@ -131,6 +132,10 @@ class CommissioningReport : Fragment() {
 
         binding.btnGprsSignal.setOnClickListener {
             photoname = ConstantHelper.GPRS_SIGNAL
+            selectImageType(requireContext())
+        }
+        binding.btnOntechConfirm.setOnClickListener {
+            photoname = ConstantHelper.ONTECH_CONFIRM
             selectImageType(requireContext())
         }
 
@@ -311,7 +316,10 @@ class CommissioningReport : Fragment() {
             }
             else  if(PhotoGprsSignalFile==null){
                 Toast.makeText(requireContext(),"Add Gprs Signal Photo ",Toast.LENGTH_SHORT).show()
-            }else  if(PhotoSmsConfigFile==null){
+            }else  if(PhotoOntechFile==null){
+                Toast.makeText(requireContext(),"Add Ontech confirm Photo ",Toast.LENGTH_SHORT).show()
+            }
+            else  if(PhotoSmsConfigFile==null){
                 Toast.makeText(requireContext(),"Add SmsConfig Photo ",Toast.LENGTH_SHORT).show()
             }else  if(PdfHexingFile==null){
                 Toast.makeText(requireContext(),"Add hexing pdf",Toast.LENGTH_SHORT).show()
@@ -373,7 +381,7 @@ class CommissioningReport : Fragment() {
          Commissioning.put("GPRSSignalStrength",GPRSSignalStrength)
 
          OntecTechnicalConfirmation.put("Key",binding.etNameOntecTech.text)
-         OntecTechnicalConfirmation.put("Value",ConstantHelper.PhotoGprsSignalFileUUID)
+         OntecTechnicalConfirmation.put("Value",ConstantHelper.PhotoOntechFileUUID)
          Commissioning.put("OntecTechnicalConfirmation",OntecTechnicalConfirmation)
 
          Commissioning.put("LocationDescription",binding.etDescMeterLocation.text.toString())
@@ -502,6 +510,21 @@ class CommissioningReport : Fragment() {
     }
 
 
+    fun loadontechConfirm(){
+        PhotoOntechFile = File(mPhotoFile?.path!!)
+        addPhoto(5)
+        Log.e("TAG", "Load Gprs Signal File: $PhotoOntechFile")
+        Glide.with(requireContext())
+            .load(PhotoOntechFile)
+            .into(binding.ivOntechConfirm)
+        showOntechconfirmImg()
+    }
+
+    fun showOntechconfirmImg() {
+        binding.ivOntechConfirm.visibility = View.VISIBLE
+    }
+
+
 
     fun loadPdfFile(){
 
@@ -559,6 +582,9 @@ class CommissioningReport : Fragment() {
                 Log.e("TAG", "photoname $photoname")
                 if (photoname == ConstantHelper.GPRS_SIGNAL) {
                     loadGprsSignalImage()
+
+                }else if (photoname == ConstantHelper.ONTECH_CONFIRM) {
+                    loadontechConfirm()
 
                 }
             }
@@ -630,6 +656,9 @@ class CommissioningReport : Fragment() {
                     Log.e("TAG", "selectImageType: Gallary")
                     dispatchGalleryIntent()
                 } else if(photoname==ConstantHelper.GPRS_SIGNAL) {
+                    Log.e("TAG", "selectImageType: Camera")
+                    dispatchTakePictureIntent()
+                }else if(photoname==ConstantHelper.ONTECH_CONFIRM) {
                     Log.e("TAG", "selectImageType: Camera")
                     dispatchTakePictureIntent()
                 } else if(photoname==ConstantHelper.PDF_COMPLETE){
@@ -914,11 +943,14 @@ class CommissioningReport : Fragment() {
 //        val api = client.getClient()?.create(Api::class.java)
         var base64Image: String=""
         if(type==1){
-            base64Image = ConstantHelper.getBase64(PhotoSmsConfigFile!!)
+            base64Image = ConstantHelper.getBase64(PhotoSmsConfigFile!!).toString()
+            Log.e("TAG", "configphoto: "+base64Image, )
         }else if(type==2){
-            base64Image = ConstantHelper.getBase64(PhotoGprsSignalFile!!)
+            base64Image = ConstantHelper.getBase64(PhotoGprsSignalFile!!).toString()
         }else if(type==3){
             base64Image = ConstantHelper.fileToBase64(PdfHexingFile!!).toString()
+        }else if(type==5){
+            base64Image = ConstantHelper.getBase64(PhotoOntechFile!!).toString()
         }
 
 
@@ -953,6 +985,9 @@ class CommissioningReport : Fragment() {
 
         }else if(type==3){
             ConstantHelper.PhotopdfhexUUID=newUUID.toString()
+
+        }else if(type==5){
+            ConstantHelper.PhotoOntechFileUUID=newUUID.toString()
 
         }
 
